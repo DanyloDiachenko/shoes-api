@@ -8,6 +8,9 @@ export class CategoryEntity {
     @Column({ unique: true })
     title: string;
 
+    @Column({ unique: true })
+    slug: string;
+
     /* @OneToMany(() => ProductEntity, (product) => product.category)
     products: Product[]; */
 }
