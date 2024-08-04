@@ -41,4 +41,8 @@ export class UpdateProductDto {
     @IsOptional()
     @IsUUID()
     categoryId?: string;
+
+    @IsOptional()
+    @IsUUID()
+    producerId?: string;
 }

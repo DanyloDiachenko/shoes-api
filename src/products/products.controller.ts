@@ -3,13 +3,11 @@ import {
     Controller,
     Delete,
     Get,
-    Inject,
     Param,
     Post,
     Put,
     Query,
 } from "@nestjs/common";
-import { Repository } from "typeorm";
 import { ProductsService } from "./products.service";
 import { FindOneParamsDto } from "src/helpers/find-one-params.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";

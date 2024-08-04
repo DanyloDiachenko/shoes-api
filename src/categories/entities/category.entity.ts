@@ -6,8 +6,11 @@ export class CategoryEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
-    @Column({ unique: true })
+    @Column()
     title: string;
+
+    @Column({ unique: true })
+    slug: string;
 
     @OneToMany(() => ProductEntity, (product) => product.category)
     products: ProductEntity[];
