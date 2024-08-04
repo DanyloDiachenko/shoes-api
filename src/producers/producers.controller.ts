@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    Put,
+} from "@nestjs/common";
 import { ProducersService } from "./producers.service";
 import { CreateProducerDto } from "./dto/create-producer.dto";
 import { FindOneParamsDto } from "src/helpers/find-one-params.dto";
@@ -18,17 +26,20 @@ export class ProducersController {
         return await this.producersService.getAll();
     }
 
-    @Get()
+    @Get(":id")
     async getOne(@Param() params: FindOneParamsDto) {
         return await this.producersService.getOne(params.id);
     }
 
-    @Post()
-    async update(@Body() updateProducerDto: UpdateProducerDto) {
-        return await this.producersService.update(updateProducerDto);
+    @Put(":id")
+    async update(
+        @Param() params: FindOneParamsDto,
+        @Body() updateProducerDto: UpdateProducerDto,
+    ) {
+        return await this.producersService.update(params.id, updateProducerDto);
     }
 
-    @Delete()
+    @Delete(":id")
     async delete(@Param() params: FindOneParamsDto) {
         return await this.producersService.delete(params.id);
     }

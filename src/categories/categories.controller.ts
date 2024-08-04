@@ -27,12 +27,12 @@ export class CategoriesController {
     }
 
     @Get(':id')
-    async findOne(@Param() params: FindOneParamsDto) {
+    async getOne(@Param() params: FindOneParamsDto) {
         return this.categoriesService.findOne(params.id);
     }
 
     @Get()
-    async findAll() {
+    async getAll() {
         return this.categoriesService.findAll();
     }
 
