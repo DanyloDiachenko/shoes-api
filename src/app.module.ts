@@ -4,6 +4,9 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { CategoriesModule } from "./categories/categories.module";
 import { CategoryEntity } from "./categories/entities/category.entity";
 import { ProductsModule } from "./products/products.module";
+import { ProducersModule } from "./producers/producers.module";
+import { ProductEntity } from "./products/entities/product.entity";
+import { ProducerEntity } from "./producers/entities/producer.entity";
 
 @Module({
     imports: [
@@ -21,14 +24,14 @@ import { ProductsModule } from "./products/products.module";
                 database: configService.get("DB_NAME"),
                 synchronize: true,
                 autoLoadEntities: true,
-                entities: [CategoryEntity],
+                entities: [CategoryEntity, ProductEntity, ProducerEntity],
             }),
             inject: [ConfigService],
         }),
         CategoriesModule,
         ProductsModule,
+        ProducersModule,
     ],
-
     controllers: [],
     providers: [],
 })

@@ -12,7 +12,7 @@ import { CreateProducerDto } from "./dto/create-producer.dto";
 import { FindOneParamsDto } from "src/helpers/find-one-params.dto";
 import { UpdateProducerDto } from "./dto/update-producer.dto";
 
-@Controller("producers")
+@Controller("/producers")
 export class ProducersController {
     constructor(private readonly producersService: ProducersService) {}
 
