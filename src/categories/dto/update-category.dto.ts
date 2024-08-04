@@ -4,4 +4,8 @@ export class UpdateCategoryDto {
     @IsOptional()
     @IsString()
     title?: string;
+
+    @IsOptional()
+    @IsString()
+    slug?: string;
 }
