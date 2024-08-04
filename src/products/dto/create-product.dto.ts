@@ -31,7 +31,7 @@ export class CreateProductDto {
     @IsOptional()
     @IsNumber({ allowInfinity: false, allowNaN: false }, { each: false })
     discountPercentage?: number;
-
+    
     @IsUUID()
     categoryId: string;
 }
