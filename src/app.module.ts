@@ -7,6 +7,7 @@ import { ProductsModule } from "./products/products.module";
 import { ProducersModule } from "./producers/producers.module";
 import { ProductEntity } from "./products/entities/product.entity";
 import { ProducerEntity } from "./producers/entities/producer.entity";
+import { UsersModule } from "./user/user.module";
 
 @Module({
     imports: [
@@ -31,6 +32,7 @@ import { ProducerEntity } from "./producers/entities/producer.entity";
         CategoriesModule,
         ProductsModule,
         ProducersModule,
+        UsersModule,
     ],
     controllers: [],
     providers: [],
