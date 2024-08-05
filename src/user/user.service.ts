@@ -6,14 +6,14 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import * as argon2 from "argon2";
 
 @Injectable()
-export class UserService {
+export class UsersService {
     constructor(
-        private readonly userRepository: Repository<UserEntity>,
+        private readonly usersRepository: Repository<UserEntity>,
         private readonly jwtService: JwtService,
     ) {}
 
     async create(createUserDto: CreateUserDto) {
-        const existingUser = await this.userRepository.findOne({
+        const existingUser = await this.usersRepository.findOne({
             where: {
                 email: createUserDto.email,
             },
@@ -23,7 +23,7 @@ export class UserService {
             throw new BadRequestException("This email already exist");
         }
 
-        const createdUser = await this.userRepository.save({
+        const createdUser = await this.usersRepository.save({
             email: createUserDto.email,
             passwordHash: await argon2.hash(createUserDto.password),
         });
