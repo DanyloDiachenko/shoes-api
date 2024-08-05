@@ -8,6 +8,7 @@ import { UsersService } from "src/users/users.service";
 import * as argon2 from "argon2";
 import { CreateUserDto } from "src/users/dto/create-user.dto";
 import { UserEntity } from "src/users/entites/user.entity";
+import { IUser } from "types/user.interface";
 
 @Injectable()
 export class AuthService {
@@ -35,7 +36,7 @@ export class AuthService {
         throw new UnauthorizedException("User or password are incorrect");
     }
 
-    async login(user: UserEntity) {
+    async login(user: IUser) {
         const { id, email } = user;
 
         return {
