@@ -3,3 +3,4 @@
 3. orders
 4. favorites
 5. history
+6. payments
