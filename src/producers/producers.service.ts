@@ -2,9 +2,10 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { ProducerEntity } from "./entities/producer.entity";
 import { Repository } from "typeorm";
 import { CreateProducerDto } from "./dto/create-producer.dto";
-import { NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { UpdateProducerDto } from "./dto/update-producer.dto";
 
+@Injectable()
 export class ProducersService {
     constructor(
         @InjectRepository(ProducerEntity)

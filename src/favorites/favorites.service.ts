@@ -1,9 +1,10 @@
-import { NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ProductEntity } from "src/products/entities/product.entity";
 import { Repository } from "typeorm";
 import { FavoriteEntity } from "./entities/favorite.entity";
 
+@Injectable()
 export class FavoritesService {
     constructor(
         @InjectRepository(ProductEntity)
