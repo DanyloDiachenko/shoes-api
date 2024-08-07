@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { FavoriteEntity } from "src/favorites/entities/favorite.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("users")
 export class UserEntity {
@@ -11,8 +12,8 @@ export class UserEntity {
     @Column()
     passwordHash: string;
 
-    /* @Column()
-    favorites: relation to favourites */
+    @OneToMany(() => FavoriteEntity, (favorite) => favorite.user)
+    favorites: FavoriteEntity[]
 
     /* @Column()
     orders: relation to orders */

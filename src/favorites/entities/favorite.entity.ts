@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { UserEntity } from "src/users/entites/user.entity";
+import {
+    Column,
+    Entity,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from "typeorm";
 
 @Entity("favorites")
 export class FavoriteEntity {
@@ -10,4 +17,7 @@ export class FavoriteEntity {
 
     @Column()
     mainImage: string;
+
+    @ManyToOne(() => UserEntity, (user) => user.favorites)
+    user: UserEntity;
 }

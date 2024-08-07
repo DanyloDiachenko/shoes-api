@@ -30,4 +30,16 @@ export class FavoritesService {
 
         return this.favoritesRepository.save(createdFavorite);
     }
+
+    async delete(id: string) {
+        const favoriteToDelete = await this.favoritesRepository.find({
+            where: { id },
+        });
+
+        if (!favoriteToDelete) {
+            throw new NotFoundException(`Product with ID ${id} not found`);
+        }
+
+        return await this.favoritesRepository.delete({ id });
+    }
 }
