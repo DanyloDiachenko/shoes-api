@@ -2,7 +2,6 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { ProducerEntity } from "./entities/producer.entity";
 import { Repository } from "typeorm";
 import { CreateProducerDto } from "./dto/create-producer.dto";
-import { ProductEntity } from "src/products/entities/product.entity";
 import { NotFoundException } from "@nestjs/common";
 import { UpdateProducerDto } from "./dto/update-producer.dto";
 
@@ -16,7 +15,7 @@ export class ProducersService {
         const newProducer =
             await this.producersRepository.create(createProducerDto);
 
-        return await this.producersRepository.save(createProducerDto);
+        return await this.producersRepository.save(newProducer);
     }
 
     async delete(id: string) {
