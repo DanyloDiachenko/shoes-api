@@ -20,21 +20,25 @@ export class AddressesController {
     constructor(private readonly addressesService: AddressesService) {}
 
     @Post()
+    @UseGuards(JwtAuthGuard)
     async create(createAddressDto: CreateAddressDto) {
         return await this.addressesService.create(createAddressDto);
     }
 
     @Get(":id")
+    @UseGuards(JwtAuthGuard)
     async getAllByUserId(@Param() params: FindOneParamsDto) {
         return await this.addressesService.getAllByUserId(params.id);
     }
 
     @Delete(":id")
+    @UseGuards(JwtAuthGuard)
     async delete(@Param() params: FindOneParamsDto) {
         return await this.addressesService.delete(params.id);
     }
 
     @Put(":id")
+    @UseGuards(JwtAuthGuard)
     async update(
         @Param() params: FindOneParamsDto,
         @Body() updateAddressDto: UpdateAddressDto,
