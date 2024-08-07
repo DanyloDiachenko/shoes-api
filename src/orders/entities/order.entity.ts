@@ -10,7 +10,7 @@ import {
 } from "typeorm";
 import { AddressEntity } from "src/addresses/entities/address.entity";
 import { UserEntity } from "src/users/entites/user.entity";
-import { OrderItem } from "src/orderItems/entites/order-item.entity";
+import { OrderCartItemEntity } from "src/orderCartItems/entites/order-cart-item.entity";
 
 @Entity("orders")
 export class OrderEntity {
@@ -35,8 +35,8 @@ export class OrderEntity {
     @JoinColumn()
     deliveryAddress: AddressEntity;
 
-    @OneToMany(() => OrderItem, (item) => item.order, {
+    @OneToMany(() => OrderCartItemEntity, (item) => item.order, {
         cascade: true,
     })
-    cart: OrderItem[];
+    cart: OrderCartItemEntity[];
 }

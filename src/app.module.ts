@@ -13,6 +13,9 @@ import { AddressEntity } from "./addresses/entities/address.entity";
 import { AuthModule } from "./auth/auth.module";
 import { FavoriteEntity } from "./favorites/entities/favorite.entity";
 import { UserEntity } from "./users/entites/user.entity";
+import { OrdersModule } from "./orders/orders.module";
+import { OrderEntity } from "./orders/entities/order.entity";
+import { OrderCartItemEntity } from "./orderCartItems/entites/order-cart-item.entity";
 
 @Module({
     imports: [
@@ -37,6 +40,8 @@ import { UserEntity } from "./users/entites/user.entity";
                     AddressEntity,
                     FavoriteEntity,
                     UserEntity,
+                    OrderEntity,
+                    OrderCartItemEntity,
                 ],
             }),
             inject: [ConfigService],
@@ -49,6 +54,7 @@ import { UserEntity } from "./users/entites/user.entity";
         AuthModule,
         FavoriteEntity,
         UsersModule,
+        OrdersModule,
     ],
     controllers: [],
     providers: [],
