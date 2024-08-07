@@ -18,6 +18,9 @@ export class CreateProductDto {
     @IsNumber({ allowInfinity: false, allowNaN: false }, { each: false })
     price: number;
 
+    @IsString()
+    mainImage: string;
+
     @IsArray()
     @IsString({ each: true })
     images: string[];
@@ -31,7 +34,7 @@ export class CreateProductDto {
     @IsOptional()
     @IsNumber({ allowInfinity: false, allowNaN: false }, { each: false })
     discountPercentage?: number;
-    
+
     @IsUUID()
     categoryId: string;
 

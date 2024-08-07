@@ -16,6 +16,9 @@ export class ProductEntity {
     @Column("decimal")
     price: number;
 
+    @Column()
+    mainImage: string;
+
     @Column("simple-array")
     images: string[];
 
