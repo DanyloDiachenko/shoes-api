@@ -53,7 +53,6 @@ import { OrderCartItemEntity } from "./orderCartItems/entites/order-cart-item.en
         AddressesModule,
         AuthModule,
         FavoriteEntity,
-        UsersModule,
         OrdersModule,
     ],
     controllers: [],

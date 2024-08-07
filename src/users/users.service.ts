@@ -4,10 +4,12 @@ import { UserEntity } from "./entites/user.entity";
 import { JwtService } from "@nestjs/jwt";
 import { CreateUserDto } from "./dto/create-user.dto";
 import * as argon2 from "argon2";
+import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
 export class UsersService {
     constructor(
+        @InjectRepository(UserEntity)
         private readonly usersRepository: Repository<UserEntity>,
         private readonly jwtService: JwtService,
     ) {}
