@@ -1,3 +1,1 @@
-3. orders
-4. history
-5. payments
+3. testing all UI (orders, addresses, favorites...)
