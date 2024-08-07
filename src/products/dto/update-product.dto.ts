@@ -14,6 +14,10 @@ export class UpdateProductDto {
     title?: string;
 
     @IsOptional()
+    @IsString()
+    description: string;
+
+    @IsOptional()
     @IsInt()
     quantity?: number;
 

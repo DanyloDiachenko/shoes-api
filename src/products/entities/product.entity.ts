@@ -10,6 +10,9 @@ export class ProductEntity {
     @Column({ unique: true })
     title: string;
 
+    @Column()
+    description: string;
+
     @Column("int")
     quantity: number;
 
