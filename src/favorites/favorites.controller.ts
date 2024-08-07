@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Post } from "@nestjs/common";
 import { FavoritesService } from "./favorites.service";
-import { FindOneParamsDto } from "src/helpers/find-one-params.dto";
+import { FindOneParamsDto } from "helpers/find-one-params.dto";
 
 @Controller("favorites")
 export class FavoritesController {

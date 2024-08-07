@@ -9,7 +9,7 @@ import {
     Query,
 } from "@nestjs/common";
 import { ProductsService } from "./products.service";
-import { FindOneParamsDto } from "src/helpers/find-one-params.dto";
+import { FindOneParamsDto } from "helpers/find-one-params.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { CreateProductDto } from "./dto/create-product.dto";
 
