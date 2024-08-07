@@ -8,6 +8,11 @@ import { ProducersModule } from "./producers/producers.module";
 import { ProductEntity } from "./products/entities/product.entity";
 import { ProducerEntity } from "./producers/entities/producer.entity";
 import { UsersModule } from "./users/users.module";
+import { AddressesModule } from "./addresses/addresses.module";
+import { AddressEntity } from "./addresses/entities/address.entity";
+import { AuthModule } from "./auth/auth.module";
+import { FavoriteEntity } from "./favorites/entities/favorite.entity";
+import { UserEntity } from "./users/entites/user.entity";
 
 @Module({
     imports: [
@@ -25,13 +30,24 @@ import { UsersModule } from "./users/users.module";
                 database: configService.get("DB_NAME"),
                 synchronize: true,
                 autoLoadEntities: true,
-                entities: [CategoryEntity, ProductEntity, ProducerEntity],
+                entities: [
+                    CategoryEntity,
+                    ProductEntity,
+                    ProducerEntity,
+                    AddressEntity,
+                    FavoriteEntity,
+                    UserEntity,
+                ],
             }),
             inject: [ConfigService],
         }),
         CategoriesModule,
         ProductsModule,
         ProducersModule,
+        UsersModule,
+        AddressesModule,
+        AuthModule,
+        FavoriteEntity,
         UsersModule,
     ],
     controllers: [],
