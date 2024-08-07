@@ -1,5 +1,6 @@
 import { AddressEntity } from "src/addresses/entities/address.entity";
 import { FavoriteEntity } from "src/favorites/entities/favorite.entity";
+import { OrderEntity } from "src/orders/entities/order.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("users")
@@ -19,9 +20,6 @@ export class UserEntity {
     @OneToMany(() => AddressEntity, (address) => address.user)
     addresses: AddressEntity[];
 
-    /* @Column()
-    orders: relation to orders */
-
-    /* @Column()
-    history: relation to history */
+    @OneToMany(() => OrderEntity, (order) => order.user)
+    orders: OrderEntity[];
 }

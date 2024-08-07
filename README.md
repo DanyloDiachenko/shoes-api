@@ -1,4 +1,3 @@
-2. adress
 3. orders
-5. history
-6. payments
+4. history
+5. payments
