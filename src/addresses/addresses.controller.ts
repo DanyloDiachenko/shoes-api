@@ -8,6 +8,8 @@ import {
     Put,
     Query,
     UseGuards,
+    UsePipes,
+    ValidationPipe,
 } from "@nestjs/common";
 import { CreateAddressDto } from "./dto/create-address.dto";
 import { AddressesService } from "./addresses.service";
@@ -21,7 +23,7 @@ export class AddressesController {
 
     @Post()
     @UseGuards(JwtAuthGuard)
-    async create(createAddressDto: CreateAddressDto) {
+    async create(@Body() createAddressDto: CreateAddressDto) {
         return await this.addressesService.create(createAddressDto);
     }
 

@@ -42,7 +42,7 @@ export class ProductsService {
         const product = this.productsRepository.create({
             ...productData,
             category,
-            producer
+            producer,
         });
 
         return this.productsRepository.save(product);
