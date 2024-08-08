@@ -3,7 +3,11 @@ import { CategoryEntity } from "./entities/category.entity";
 import { Repository } from "typeorm";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 import { UpdateCategoryDto } from "./dto/update-category.dto";
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import {
+    BadRequestException,
+    Injectable,
+    NotFoundException,
+} from "@nestjs/common";
 
 @Injectable()
 export class CategoriesService {
@@ -38,7 +42,9 @@ export class CategoriesService {
             throw new NotFoundException(`Category with ID ${id} not found`);
         }
 
-        return await this.categoriesRepository.remove(categoryToDelete);
+        await this.categoriesRepository.remove(categoryToDelete);
+
+        return { success: true }
     }
 
     async findOne(id: string) {
