@@ -7,6 +7,7 @@ import {
     Post,
     Put,
     Query,
+    Req,
     UseGuards,
     UsePipes,
     ValidationPipe,
@@ -23,14 +24,17 @@ export class AddressesController {
 
     @Post()
     @UseGuards(JwtAuthGuard)
-    async create(@Body() createAddressDto: CreateAddressDto) {
-        return await this.addressesService.create(createAddressDto);
+    async create(@Body() createAddressDto: CreateAddressDto, @Req() req: any) {
+        return await this.addressesService.create(
+            createAddressDto,
+            req.user.id,
+        );
     }
 
-    @Get(":id")
+    @Get()
     @UseGuards(JwtAuthGuard)
-    async getAllByUserId(@Param() params: FindOneParamsDto) {
-        return await this.addressesService.getAllByUserId(params.id);
+    async getAllByUser(@Req() req: any) {
+        return await this.addressesService.getAllByUser(req.user.id);
     }
 
     @Delete(":id")

@@ -15,21 +15,24 @@ export class AddressesService {
         private readonly userRepository: Repository<UserEntity>,
     ) {}
 
-    async create(createAddressDto: CreateAddressDto) {
-        const createdAddress =
-            await this.addressesRepository.create(createAddressDto);
+    async create(createAddressDto: CreateAddressDto, userId: string) {
+        const address = this.addressesRepository.create({
+            ...createAddressDto,
+            user: { id: userId },
+        });
 
-        return await this.addressesRepository.save(createdAddress);
+        return await this.addressesRepository.save(address);
     }
 
-    async getAllByUserId(userId: string) {
-        const isExistingUser = await this.userRepository.findOne({
+    async getAllByUser(userId: string) {
+        const userExists = await this.userRepository.findOne({
             where: { id: userId },
         });
 
-        if (!isExistingUser) {
+        if (!userExists) {
             throw new NotFoundException(`User with ID ${userId} not found`);
         }
+        console.log(await this.addressesRepository.find());
 
         return await this.addressesRepository.find({
             where: { user: { id: userId } },
