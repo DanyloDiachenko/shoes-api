@@ -1,11 +1,9 @@
 import {
-    Entity,
     Column,
-    PrimaryGeneratedColumn,
+    Entity,
     ManyToOne,
+    PrimaryGeneratedColumn,
     JoinColumn,
-    CreateDateColumn,
-    OneToMany,
 } from "typeorm";
 import { UserEntity } from "src/users/entites/user.entity";
 import { AddressEntity } from "src/addresses/entities/address.entity";
@@ -15,24 +13,16 @@ export class OrderEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
-    @CreateDateColumn({ type: "timestamp" })
-    createdAt: Date;
-
-    @Column({
-        type: "enum",
-        enum: ["pending", "shipped", "delivered", "cancelled", "succeed"],
-        default: "pending",
-    })
-    status: string;
-
     @ManyToOne(() => UserEntity, (user) => user.orders)
-    @JoinColumn()
     user: UserEntity;
 
     @ManyToOne(() => AddressEntity)
-    @JoinColumn()
+    @JoinColumn({ name: "deliveryAddressId" })
     deliveryAddress: AddressEntity;
 
     @Column("jsonb")
-    cart: any[];
+    cart: { productId: string; quantity: number }[];
+
+    @Column("timestamp", { default: () => "CURRENT_TIMESTAMP" })
+    createdAt: Date;
 }

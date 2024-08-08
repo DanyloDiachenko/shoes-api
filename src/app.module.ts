@@ -13,9 +13,9 @@ import { AddressEntity } from "./addresses/entities/address.entity";
 import { AuthModule } from "./auth/auth.module";
 import { FavoriteEntity } from "./favorites/entities/favorite.entity";
 import { UserEntity } from "./users/entites/user.entity";
-import { OrdersModule } from "./orders/orders.module";
-import { OrderEntity } from "./orders/entities/order.entity";
 import { FavoritesModule } from "./favorites/favorites.module";
+import { OrderEntity } from "./orders/entities/order.entity";
+import { OrdersModule } from "./orders/orders.module";
 
 @Module({
     imports: [

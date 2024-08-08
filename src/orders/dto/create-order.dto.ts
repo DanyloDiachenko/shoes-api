@@ -1,25 +1,8 @@
-import { Type } from "class-transformer";
-import {
-    IsString,
-    IsUUID,
-    IsInt,
-    IsArray,
-    ValidateNested,
-} from "class-validator";
-
-class ProductOrderDto {
-    @IsUUID()
-    productId: string;
-
-    @IsInt()
-    quantity: number;
-}
+import { IsArray, IsUUID } from "class-validator";
 
 export class CreateOrderDto {
     @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => ProductOrderDto)
-    cart: ProductOrderDto[];
+    cart: { productId: string; quantity: number }[];
 
     @IsUUID()
     deliveryAddressId: string;
