@@ -1,29 +1,51 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { OrderEntity } from "src/orders/entities/order.entity";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { OrderCartItemEntity } from "src/orderCartItems/entites/order-cart-item.entity";
+import { UserEntity } from "src/users/entites/user.entity";
+import { AddressEntity } from "src/addresses/entities/address.entity";
 
 @Injectable()
 export class OrdersService {
     constructor(
         @InjectRepository(OrderEntity)
-        private orderRepository: Repository<OrderEntity>,
+        private ordersRepository: Repository<OrderEntity>,
         @InjectRepository(OrderCartItemEntity)
-        private orderItemRepository: Repository<OrderCartItemEntity>,
+        private ordersItemRepository: Repository<OrderCartItemEntity>,
+        @InjectRepository(UserEntity)
+        private readonly usersRepository: Repository<UserEntity>,
+        @InjectRepository(AddressEntity)
+        private readonly addressesRepository: Repository<AddressEntity>,
     ) {}
 
-    async create(createOrderDto: CreateOrderDto): Promise<OrderEntity> {
-        const { cart, address } = createOrderDto;
+    async create(createOrderDto: CreateOrderDto, userId: string) {
+        const { cart, deliveryAddressId } = createOrderDto;
+
+        const user = await this.usersRepository.findOne({
+            where: { id: userId },
+        });
+        if (!user) {
+            throw new NotFoundException(`User with ID ${userId} not found`);
+        }
+
+        const deliveryAddress = await this.addressesRepository.findOne({
+            where: { id: deliveryAddressId },
+        });
+        if (!deliveryAddress) {
+            throw new NotFoundException(
+                `Address with ID ${deliveryAddress} not found`,
+            );
+        }
 
         const order = new OrderEntity();
 
-        order.deliveryAddress = address;
-        order.cart = [];
+        order.user = user;
+        order.deliveryAddress = deliveryAddress;
         order.status = "pending";
 
-        await this.orderRepository.save(order);
+        await this.ordersRepository.save(order);
 
         for (const item of cart) {
             const orderItem = new OrderCartItemEntity();
@@ -36,9 +58,16 @@ export class OrdersService {
             orderItem.quantity = item.quantity;
             orderItem.order = order;
 
-            await this.orderItemRepository.save(orderItem);
+            await this.ordersItemRepository.save(orderItem);
         }
 
         return order;
+    }
+
+    async getUsersOrders(userId: string) {
+        return await this.ordersRepository.find({
+            where: { user: { id: userId } },
+            relations: ["deliveryAddress", "cart"],
+        });
     }
 }

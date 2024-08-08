@@ -18,7 +18,6 @@ export class CreateOrderDto {
     @Type(() => OrderCartItemEntity)
     cart: OrderCartItemEntity[];
 
-    @ValidateNested()
-    @Type(() => AddressEntity)
-    address: AddressEntity;
+    @IsString()
+    deliveryAddressId: string;
 }
