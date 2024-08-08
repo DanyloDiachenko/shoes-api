@@ -1,23 +1,26 @@
 import { Type } from "class-transformer";
 import {
     IsString,
-    IsNumber,
-    Min,
-    Max,
-    IsOptional,
-    ValidateNested,
+    IsUUID,
     IsInt,
     IsArray,
+    ValidateNested,
 } from "class-validator";
-import { AddressEntity } from "src/addresses/entities/address.entity";
-import { OrderCartItemEntity } from "src/orderCartItems/entites/order-cart-item.entity";
+
+class ProductOrderDto {
+    @IsUUID()
+    productId: string;
+
+    @IsInt()
+    quantity: number;
+}
 
 export class CreateOrderDto {
     @IsArray()
     @ValidateNested({ each: true })
-    @Type(() => OrderCartItemEntity)
-    cart: OrderCartItemEntity[];
+    @Type(() => ProductOrderDto)
+    cart: ProductOrderDto[];
 
-    @IsString()
+    @IsUUID()
     deliveryAddressId: string;
 }

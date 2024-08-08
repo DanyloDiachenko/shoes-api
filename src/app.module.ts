@@ -15,7 +15,6 @@ import { FavoriteEntity } from "./favorites/entities/favorite.entity";
 import { UserEntity } from "./users/entites/user.entity";
 import { OrdersModule } from "./orders/orders.module";
 import { OrderEntity } from "./orders/entities/order.entity";
-import { OrderCartItemEntity } from "./orderCartItems/entites/order-cart-item.entity";
 import { FavoritesModule } from "./favorites/favorites.module";
 
 @Module({
@@ -42,7 +41,6 @@ import { FavoritesModule } from "./favorites/favorites.module";
                     FavoriteEntity,
                     UserEntity,
                     OrderEntity,
-                    OrderCartItemEntity,
                 ],
             }),
             inject: [ConfigService],

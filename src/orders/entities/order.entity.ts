@@ -2,15 +2,13 @@ import {
     Entity,
     Column,
     PrimaryGeneratedColumn,
-    OneToOne,
-    JoinColumn,
     ManyToOne,
+    JoinColumn,
     CreateDateColumn,
     OneToMany,
 } from "typeorm";
-import { AddressEntity } from "src/addresses/entities/address.entity";
 import { UserEntity } from "src/users/entites/user.entity";
-import { OrderCartItemEntity } from "src/orderCartItems/entites/order-cart-item.entity";
+import { AddressEntity } from "src/addresses/entities/address.entity";
 
 @Entity("orders")
 export class OrderEntity {
@@ -31,12 +29,10 @@ export class OrderEntity {
     @JoinColumn()
     user: UserEntity;
 
-    @OneToOne(() => AddressEntity)
+    @ManyToOne(() => AddressEntity)
     @JoinColumn()
     deliveryAddress: AddressEntity;
 
-    @OneToMany(() => OrderCartItemEntity, (item) => item.order, {
-        cascade: true,
-    })
-    cart: OrderCartItemEntity[];
+    @Column("jsonb")
+    cart: any[];
 }
