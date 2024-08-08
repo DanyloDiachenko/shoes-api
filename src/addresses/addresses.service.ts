@@ -21,7 +21,9 @@ export class AddressesService {
             user: { id: userId },
         });
 
-        return await this.addressesRepository.save(address);
+        await this.addressesRepository.save(address);
+
+        return { ...address, user: undefined };
     }
 
     async getAllByUser(userId: string) {
@@ -47,7 +49,11 @@ export class AddressesService {
             throw new NotFoundException(`Address with ID ${id} not found`);
         }
 
-        return await this.addressesRepository.delete({ id: id });
+        await this.addressesRepository.delete({ id: id });
+
+        return {
+            success: true,
+        };
     }
 
     async update(id: string, updateAddressDto: UpdateAddressDto) {
