@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { Unique } from "typeorm";
 
 export class CreateCategoryDto {
     @IsString()

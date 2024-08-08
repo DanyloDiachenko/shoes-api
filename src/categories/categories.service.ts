@@ -1,9 +1,9 @@
-import { InjectRepository } from '@nestjs/typeorm';
-import { CategoryEntity } from './entities/category.entity';
-import { Repository } from 'typeorm';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from "@nestjs/typeorm";
+import { CategoryEntity } from "./entities/category.entity";
+import { Repository } from "typeorm";
+import { CreateCategoryDto } from "./dto/create-category.dto";
+import { UpdateCategoryDto } from "./dto/update-category.dto";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 
 @Injectable()
 export class CategoriesService {
@@ -13,10 +13,20 @@ export class CategoriesService {
     ) {}
 
     async create(createCategoryDto: CreateCategoryDto) {
-        const newCategory =
-            await this.categoriesRepository.create(createCategoryDto);
+        const isExistingCategory = await this.categoriesRepository.findOne({
+            where: { slug: createCategoryDto.slug },
+        });
 
-        return this.categoriesRepository.save(newCategory);
+        if (!isExistingCategory) {
+            const newCategory =
+                await this.categoriesRepository.create(createCategoryDto);
+
+            return this.categoriesRepository.save(newCategory);
+        }
+
+        throw new BadRequestException(
+            `Category with Slug ${createCategoryDto.slug} already exists`,
+        );
     }
 
     async delete(id: string) {
