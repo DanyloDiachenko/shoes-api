@@ -13,7 +13,7 @@ export class FavoritesService {
         private readonly favoritesRepository: Repository<FavoriteEntity>,
     ) {}
 
-    async createByProductId(productId: string) {
+    async createByProductId(productId: string, userId: string) {
         const findedProduct = await this.productsRepository.findOne({
             where: { id: productId },
         });

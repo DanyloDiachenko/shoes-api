@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Post, Req, UseGuards } from "@nestjs/common";
 import { FavoritesService } from "./favorites.service";
 import { FindOneParamsDto } from "helpers/find-one-params.dto";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
@@ -9,10 +9,11 @@ export class FavoritesController {
 
     @Post()
     @UseGuards(JwtAuthGuard)
-    async createByProductId(@Body() body: FindOneParamsDto) {
+    async createByProductId(@Body() body: FindOneParamsDto, @Req() req: any) {
         const productId = body.id;
+        const userId = req.user.id;
 
-        return await this.favoritesService.createByProductId(productId);
+        return await this.favoritesService.createByProductId(productId, userId);
     }
 
     @Delete()
@@ -20,6 +21,6 @@ export class FavoritesController {
     async delete(@Body() body: FindOneParamsDto) {
         const favoriteId = body.id;
 
-        return await this.favoritesService.createByProductId(favoriteId);
+        return await this.favoritesService.delete(favoriteId);
     }
 }
