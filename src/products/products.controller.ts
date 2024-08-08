@@ -18,8 +18,8 @@ export class ProductsController {
     constructor(private readonly productsService: ProductsService) {}
 
     @Get()
-    async findAll(@Query("categoryId") categoryId?: string) {
-        return this.productsService.findAll(categoryId);
+    async findAll(@Query("category") category?: string) {
+        return this.productsService.findAll(category);
     }
 
     @Get()

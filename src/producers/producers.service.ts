@@ -2,7 +2,11 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { ProducerEntity } from "./entities/producer.entity";
 import { Repository } from "typeorm";
 import { CreateProducerDto } from "./dto/create-producer.dto";
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+    BadRequestException,
+    Injectable,
+    NotFoundException,
+} from "@nestjs/common";
 import { UpdateProducerDto } from "./dto/update-producer.dto";
 
 @Injectable()
@@ -13,10 +17,20 @@ export class ProducersService {
     ) {}
 
     async create(createProducerDto: CreateProducerDto) {
-        const newProducer =
-            await this.producersRepository.create(createProducerDto);
+        const isExistingCategory = await this.producersRepository.findOne({
+            where: { slug: createProducerDto.slug },
+        });
 
-        return await this.producersRepository.save(newProducer);
+        if (!isExistingCategory) {
+            const newCategory =
+                await this.producersRepository.create(createProducerDto);
+
+            return this.producersRepository.save(newCategory);
+        }
+
+        throw new BadRequestException(
+            `Category with Slug ${createProducerDto.slug} already exists`,
+        );
     }
 
     async delete(id: string) {

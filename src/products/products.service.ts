@@ -58,16 +58,14 @@ export class ProductsService {
         return product;
     }
 
-    async findAll(categoryId?: string): Promise<ProductEntity[]> {
-        if (categoryId) {
+    async findAll(category?: string): Promise<ProductEntity[]> {
+        if (category) {
             return this.productsRepository.find({
-                where: { category: { id: categoryId } },
+                where: { category: { slug: category } },
                 relations: ["category"],
             });
         } else {
-            return this.productsRepository.find({
-                relations: ["category"],
-            });
+            return this.productsRepository.find();
         }
     }
 
