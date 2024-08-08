@@ -21,8 +21,10 @@ export class ProductsController {
     async findAll(
         @Query("category") category?: string,
         @Query("producer") producer?: string,
+        @Query("page") page: number = 1,
+        @Query("limit") limit: number = 5,
     ) {
-        return this.productsService.findAll(category, producer);
+        return this.productsService.findAll(category, producer, page, limit);
     }
 
     @Get(":id")

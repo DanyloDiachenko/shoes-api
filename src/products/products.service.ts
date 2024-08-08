@@ -71,7 +71,12 @@ export class ProductsService {
         return product;
     }
 
-    async findAll(category?: string, producer?: string) {
+    async findAll(
+        category?: string,
+        producer?: string,
+        page: number = 1,
+        limit: number = 5,
+    ) {
         const whereConditions = [];
 
         if (category) {
@@ -82,10 +87,22 @@ export class ProductsService {
             whereConditions.push({ producer: { slug: producer } });
         }
 
-        return this.productsRepository.find({
+        const [result, total] = await this.productsRepository.findAndCount({
             where: whereConditions.length > 0 ? whereConditions : {},
             relations: ["category", "producer"],
+            skip: (page - 1) * limit,
+            take: limit,
         });
+
+        const totalPages = Math.ceil(total / limit);
+        const activeCount = result.length;
+        const remainingPages = totalPages - page;
+
+        return {
+            data: result,
+            activeCount: activeCount,
+            remainingPages: remainingPages,
+        };
     }
 
     async update(
