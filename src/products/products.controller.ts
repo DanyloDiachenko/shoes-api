@@ -13,26 +13,29 @@ import { FindOneParamsDto } from "helpers/find-one-params.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { CreateProductDto } from "./dto/create-product.dto";
 
-@Controller("/products")
+@Controller("products")
 export class ProductsController {
     constructor(private readonly productsService: ProductsService) {}
 
     @Get()
-    async findAll(@Query("category") category?: string) {
-        return this.productsService.findAll(category);
+    async findAll(
+        @Query("category") category?: string,
+        @Query("producer") producer?: string,
+    ) {
+        return this.productsService.findAll(category, producer);
     }
 
-    @Get()
+    @Get(":id")
     async findeOne(@Param() params: FindOneParamsDto) {
         return await this.productsService.findOne(params.id);
     }
 
-    @Delete()
+    @Delete(":id")
     async delete(@Param() params: FindOneParamsDto) {
         return await this.productsService.delete(params.id);
     }
 
-    @Put()
+    @Put(":id")
     async update(
         @Body() updateProductDto: UpdateProductDto,
         @Param() params: FindOneParamsDto,

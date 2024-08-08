@@ -5,6 +5,7 @@ import { ProductEntity } from "./entities/product.entity";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { CategoryEntity } from "src/categories/entities/category.entity";
+import { ProducerEntity } from "src/producers/entities/producer.entity";
 
 @Injectable()
 export class ProductsService {
@@ -13,7 +14,7 @@ export class ProductsService {
         private readonly productsRepository: Repository<ProductEntity>,
         @InjectRepository(CategoryEntity)
         private categoriesRepository: Repository<CategoryEntity>,
-        @InjectRepository(ProductEntity)
+        @InjectRepository(ProducerEntity)
         private readonly producersRepository: Repository<ProductEntity>,
     ) {}
 
@@ -41,6 +42,7 @@ export class ProductsService {
         const product = this.productsRepository.create({
             ...productData,
             category,
+            producer
         });
 
         return this.productsRepository.save(product);
@@ -61,7 +63,7 @@ export class ProductsService {
     async findOne(id: string): Promise<ProductEntity> {
         const product = await this.productsRepository.findOne({
             where: { id },
-            relations: ["category"],
+            relations: ["category", "producer"],
         });
         if (!product) {
             throw new NotFoundException(`Product with ID ${id} not found`);
@@ -69,15 +71,21 @@ export class ProductsService {
         return product;
     }
 
-    async findAll(category?: string): Promise<ProductEntity[]> {
+    async findAll(category?: string, producer?: string) {
+        const whereConditions = [];
+
         if (category) {
-            return this.productsRepository.find({
-                where: { category: { slug: category } },
-                relations: ["category"],
-            });
-        } else {
-            return this.productsRepository.find();
+            whereConditions.push({ category: { slug: category } });
         }
+
+        if (producer) {
+            whereConditions.push({ producer: { slug: producer } });
+        }
+
+        return this.productsRepository.find({
+            where: whereConditions.length > 0 ? whereConditions : {},
+            relations: ["category", "producer"],
+        });
     }
 
     async update(
