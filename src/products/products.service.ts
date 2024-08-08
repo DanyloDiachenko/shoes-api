@@ -13,17 +13,28 @@ export class ProductsService {
         private readonly productsRepository: Repository<ProductEntity>,
         @InjectRepository(CategoryEntity)
         private categoriesRepository: Repository<CategoryEntity>,
+        @InjectRepository(ProductEntity)
+        private readonly producersRepository: Repository<ProductEntity>,
     ) {}
 
     async create(createProductDto: CreateProductDto): Promise<ProductEntity> {
-        const { categoryId, ...productData } = createProductDto;
+        const { categoryId, producerId, ...productData } = createProductDto;
+
         const category = await this.categoriesRepository.findOne({
             where: { id: categoryId },
         });
-
         if (!category) {
             throw new NotFoundException(
                 `Category with ID ${categoryId} not found`,
+            );
+        }
+
+        const producer = await this.producersRepository.findOne({
+            where: { id: producerId },
+        });
+        if (!producer) {
+            throw new NotFoundException(
+                `Producer with ID ${categoryId} not found`,
             );
         }
 
