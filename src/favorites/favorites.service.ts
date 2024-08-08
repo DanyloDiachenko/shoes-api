@@ -33,7 +33,12 @@ export class FavoritesService {
             user: { id: userId },
         });
 
-        return this.favoritesRepository.save(createdFavorite);
+        await this.favoritesRepository.save(createdFavorite);
+
+        return {
+            ...createdFavorite,
+            user: undefined,
+        };
     }
 
     async getUsersFavorites(userId: string) {
@@ -59,6 +64,10 @@ export class FavoritesService {
             throw new NotFoundException(`Product with ID ${id} not found`);
         }
 
-        return await this.favoritesRepository.delete({ id });
+        await this.favoritesRepository.delete({ id });
+
+        return {
+            success: true,
+        };
     }
 }
