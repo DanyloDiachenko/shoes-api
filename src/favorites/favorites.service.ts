@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { ProductEntity } from "src/products/entities/product.entity";
 import { Repository } from "typeorm";
 import { FavoriteEntity } from "./entities/favorite.entity";
+import { UserEntity } from "src/users/entites/user.entity";
 
 @Injectable()
 export class FavoritesService {
@@ -11,6 +12,8 @@ export class FavoritesService {
         private readonly productsRepository: Repository<ProductEntity>,
         @InjectRepository(FavoriteEntity)
         private readonly favoritesRepository: Repository<FavoriteEntity>,
+        @InjectRepository(UserEntity)
+        private readonly usersRepository: Repository<UserEntity>,
     ) {}
 
     async createByProductId(productId: string, userId: string) {
@@ -27,9 +30,24 @@ export class FavoritesService {
         const createdFavorite = await this.favoritesRepository.create({
             title: findedProduct.title,
             mainImage: findedProduct.mainImage,
+            user: { id: userId },
         });
 
         return this.favoritesRepository.save(createdFavorite);
+    }
+
+    async getUsersFavorites(userId: string) {
+        const userExists = await this.usersRepository.findOne({
+            where: { id: userId },
+        });
+
+        if (!userExists) {
+            throw new NotFoundException(`User with ID ${userId} not found`);
+        }
+
+        return await this.favoritesRepository.find({
+            where: { user: { id: userId } },
+        });
     }
 
     async delete(id: string) {

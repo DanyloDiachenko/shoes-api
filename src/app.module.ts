@@ -16,6 +16,7 @@ import { UserEntity } from "./users/entites/user.entity";
 import { OrdersModule } from "./orders/orders.module";
 import { OrderEntity } from "./orders/entities/order.entity";
 import { OrderCartItemEntity } from "./orderCartItems/entites/order-cart-item.entity";
+import { FavoritesModule } from "./favorites/favorites.module";
 
 @Module({
     imports: [
@@ -52,7 +53,7 @@ import { OrderCartItemEntity } from "./orderCartItems/entites/order-cart-item.en
         UsersModule,
         AddressesModule,
         AuthModule,
-        FavoriteEntity,
+        FavoritesModule,
         OrdersModule,
     ],
     controllers: [],

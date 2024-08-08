@@ -1,7 +1,17 @@
-import { Body, Controller, Delete, Post, Req, UseGuards } from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    Req,
+    UseGuards,
+} from "@nestjs/common";
 import { FavoritesService } from "./favorites.service";
 import { FindOneParamsDto } from "helpers/find-one-params.dto";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { CreateFavoriteDto } from "./dto/create-favorite.dto";
 
 @Controller("favorites")
 export class FavoritesController {
@@ -9,18 +19,31 @@ export class FavoritesController {
 
     @Post()
     @UseGuards(JwtAuthGuard)
-    async createByProductId(@Body() body: FindOneParamsDto, @Req() req: any) {
-        const productId = body.id;
+    async createByProductId(
+        @Body() createFavoriteDto: CreateFavoriteDto,
+        @Req() req: any,
+    ) {
         const userId = req.user.id;
 
-        return await this.favoritesService.createByProductId(productId, userId);
+        return await this.favoritesService.createByProductId(
+            createFavoriteDto.productId,
+            userId,
+        );
     }
 
-    @Delete()
+    @Delete(":id")
     @UseGuards(JwtAuthGuard)
-    async delete(@Body() body: FindOneParamsDto) {
-        const favoriteId = body.id;
+    async delete(@Param() params: FindOneParamsDto) {
+        const favoriteId = params.id;
 
         return await this.favoritesService.delete(favoriteId);
+    }
+
+    @Get()
+    @UseGuards(JwtAuthGuard)
+    async getUsersFavorites(@Req() req: any) {
+        const userId = req.user.id;
+
+        return await this.favoritesService.getUsersFavorites(userId);
     }
 }
