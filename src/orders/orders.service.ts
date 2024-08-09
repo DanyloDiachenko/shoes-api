@@ -27,6 +27,7 @@ export class OrdersService {
                 id: createOrderDto.deliveryAddressId,
             } as AddressEntity,
         });
+
         return this.ordersRepository.save(order);
     }
 
@@ -54,6 +55,7 @@ export class OrdersService {
             );
             order.cart = updatedCart as any;
         }
+
         return orders;
     }
 }

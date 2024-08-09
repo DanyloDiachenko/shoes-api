@@ -21,7 +21,7 @@ import {
     ApiOperation,
     ApiResponse,
 } from "@nestjs/swagger";
-import { AddressResponseDto } from "./dto/address-response.dto";
+import { AddressDto } from "./dto/address.dto";
 
 @ApiTags("addresses")
 @Controller("addresses")
@@ -35,8 +35,8 @@ export class AddressesController {
     @ApiResponse({
         status: 201,
         description: "The address has been successfully created.",
-        example: AddressResponseDto,
-        type: AddressResponseDto,
+        example: AddressDto,
+        type: AddressDto,
     })
     @ApiResponse({ status: 401, description: "Unauthorized." })
     async create(@Body() createAddressDto: CreateAddressDto, @Req() req: any) {
@@ -53,8 +53,8 @@ export class AddressesController {
     @ApiResponse({
         status: 201,
         description: "Return all addresses for the user.",
-        type: [AddressResponseDto],
-        example: AddressResponseDto,
+        type: [AddressDto],
+        example: AddressDto,
     })
     @ApiResponse({ status: 401, description: "Unauthorized." })
     @ApiResponse({
@@ -86,8 +86,8 @@ export class AddressesController {
     @ApiResponse({
         status: 200,
         description: "The address has been successfully updated.",
-        example: AddressResponseDto,
-        type: AddressResponseDto,
+        example: AddressDto,
+        type: AddressDto,
     })
     @ApiResponse({ status: 404, description: "Address not found." })
     async update(
