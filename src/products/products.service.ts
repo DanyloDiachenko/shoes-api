@@ -57,7 +57,9 @@ export class ProductsService {
             throw new NotFoundException(`Product with ID ${id} not found`);
         }
 
-        return await this.productsRepository.remove(productToDelete);
+        await this.productsRepository.remove(productToDelete);
+
+        return { success: true };
     }
 
     async findOne(id: string): Promise<ProductEntity> {
