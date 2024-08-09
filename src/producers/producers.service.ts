@@ -42,7 +42,9 @@ export class ProducersService {
             throw new NotFoundException(`Producer with ID ${id} not found`);
         }
 
-        return await this.producersRepository.remove(producerToDelete);
+        await this.producersRepository.remove(producerToDelete);
+
+        return { success: true };
     }
 
     async getOne(id: string) {
