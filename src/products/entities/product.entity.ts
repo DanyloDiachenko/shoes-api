@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 import { CategoryEntity } from "src/categories/entities/category.entity";
-import { ProducerEntity } from "src/producers/entities/producer.entity";
+import { BrandEntity } from "src/brands/entities/brand.entity";
 
 @Entity("products")
 export class ProductEntity {
@@ -37,6 +37,6 @@ export class ProductEntity {
     @ManyToOne(() => CategoryEntity, (category) => category.products)
     category: CategoryEntity;
 
-    @ManyToOne(() => ProducerEntity, (producer) => producer.products)
-    producer: ProducerEntity;
+    @ManyToOne(() => BrandEntity, (brand) => brand.products)
+    brand: BrandEntity;
 }

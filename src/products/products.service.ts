@@ -5,7 +5,7 @@ import { ProductEntity } from "./entities/product.entity";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { CategoryEntity } from "src/categories/entities/category.entity";
-import { ProducerEntity } from "src/producers/entities/producer.entity";
+import { BrandEntity } from "src/brands/entities/brand.entity";
 
 @Injectable()
 export class ProductsService {
@@ -14,12 +14,12 @@ export class ProductsService {
         private readonly productsRepository: Repository<ProductEntity>,
         @InjectRepository(CategoryEntity)
         private categoriesRepository: Repository<CategoryEntity>,
-        @InjectRepository(ProducerEntity)
-        private readonly producersRepository: Repository<ProductEntity>,
+        @InjectRepository(BrandEntity)
+        private readonly brandsRepository: Repository<BrandEntity>,
     ) {}
 
     async create(createProductDto: CreateProductDto): Promise<ProductEntity> {
-        const { categoryId, producerId, ...productData } = createProductDto;
+        const { categoryId, brandId, ...productData } = createProductDto;
 
         const category = await this.categoriesRepository.findOne({
             where: { id: categoryId },
@@ -30,19 +30,17 @@ export class ProductsService {
             );
         }
 
-        const producer = await this.producersRepository.findOne({
-            where: { id: producerId },
+        const brand = await this.brandsRepository.findOne({
+            where: { id: brandId },
         });
-        if (!producer) {
-            throw new NotFoundException(
-                `Producer with ID ${categoryId} not found`,
-            );
+        if (!brand) {
+            throw new NotFoundException(`Brand with ID ${brandId} not found`);
         }
 
         const product = this.productsRepository.create({
             ...productData,
             category,
-            producer,
+            brand,
         });
 
         return this.productsRepository.save(product);
@@ -65,7 +63,7 @@ export class ProductsService {
     async findOne(id: string): Promise<ProductEntity> {
         const product = await this.productsRepository.findOne({
             where: { id },
-            relations: ["category", "producer"],
+            relations: ["category", "brand"],
         });
         if (!product) {
             throw new NotFoundException(`Product with ID ${id} not found`);
@@ -75,7 +73,7 @@ export class ProductsService {
 
     async findAll(
         category?: string,
-        producer?: string,
+        brand?: string,
         page: number = 1,
         limit: number = 5,
     ) {
@@ -85,13 +83,13 @@ export class ProductsService {
             whereConditions.push({ category: { slug: category } });
         }
 
-        if (producer) {
-            whereConditions.push({ producer: { slug: producer } });
+        if (brand) {
+            whereConditions.push({ brand: { slug: brand } });
         }
 
         const [result, total] = await this.productsRepository.findAndCount({
             where: whereConditions.length > 0 ? whereConditions : {},
-            relations: ["category", "producer"],
+            relations: ["category", "brand"],
             skip: (page - 1) * limit,
             take: limit,
         });

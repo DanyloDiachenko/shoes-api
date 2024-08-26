@@ -59,7 +59,7 @@ export class CreateProductDto {
     @IsUUID()
     categoryId: string;
 
-    @ApiProperty({ description: "ID of the producer of the product" })
+    @ApiProperty({ description: "ID of the brand of the product" })
     @IsUUID()
-    producerId: string;
+    brandId: string;
 }

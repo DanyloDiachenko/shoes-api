@@ -68,8 +68,8 @@ export class UpdateProductDto {
     @IsUUID()
     categoryId?: string;
 
-    @ApiPropertyOptional({ description: "ID of the producer of the product" })
+    @ApiPropertyOptional({ description: "ID of the brand of the product" })
     @IsOptional()
     @IsUUID()
-    producerId?: string;
+    brandId?: string;
 }

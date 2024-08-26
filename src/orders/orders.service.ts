@@ -42,7 +42,7 @@ export class OrdersService {
                 order.cart.map(async (item) => {
                     const product = await this.productsRepository.findOne({
                         where: { id: item.productId },
-                        relations: ["category", "producer"],
+                        relations: ["category", "brand"],
                     });
                     if (product) {
                         return {

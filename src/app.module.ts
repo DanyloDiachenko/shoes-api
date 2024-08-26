@@ -4,9 +4,9 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { CategoriesModule } from "./categories/categories.module";
 import { CategoryEntity } from "./categories/entities/category.entity";
 import { ProductsModule } from "./products/products.module";
-import { ProducersModule } from "./producers/producers.module";
+import { BrandsModule } from "./brands/brands.module";
 import { ProductEntity } from "./products/entities/product.entity";
-import { ProducerEntity } from "./producers/entities/producer.entity";
+import { BrandEntity } from "./brands/entities/brand.entity";
 import { UsersModule } from "./users/users.module";
 import { AddressesModule } from "./addresses/addresses.module";
 import { AddressEntity } from "./addresses/entities/address.entity";
@@ -36,7 +36,7 @@ import { OrdersModule } from "./orders/orders.module";
                 entities: [
                     CategoryEntity,
                     ProductEntity,
-                    ProducerEntity,
+                    ProductEntity,
                     AddressEntity,
                     FavoriteEntity,
                     UserEntity,
@@ -47,7 +47,7 @@ import { OrdersModule } from "./orders/orders.module";
         }),
         CategoriesModule,
         ProductsModule,
-        ProducersModule,
+        BrandsModule,
         UsersModule,
         AddressesModule,
         AuthModule,

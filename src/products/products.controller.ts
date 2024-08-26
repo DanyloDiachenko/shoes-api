@@ -35,9 +35,9 @@ export class ProductsController {
         description: "Filter products by category ID",
     })
     @ApiQuery({
-        name: "producer",
+        name: "brand",
         required: false,
-        description: "Filter products by producer ID",
+        description: "Filter products by brand ID",
     })
     @ApiQuery({
         name: "page",
@@ -58,11 +58,11 @@ export class ProductsController {
     })
     async findAll(
         @Query("category") category?: string,
-        @Query("producer") producer?: string,
+        @Query("brand") brand?: string,
         @Query("page") page: number = 1,
         @Query("limit") limit: number = 5,
     ) {
-        return this.productsService.findAll(category, producer, page, limit);
+        return this.productsService.findAll(category, brand, page, limit);
     }
 
     @Get(":id")
