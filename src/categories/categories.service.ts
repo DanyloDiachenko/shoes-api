@@ -59,6 +59,7 @@ export class CategoriesService {
 
         return {
             ...findedCategory,
+            products: undefined,
             productsQuantity: findedCategory.products.length,
         };
     }

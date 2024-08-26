@@ -72,4 +72,10 @@ export class UpdateProductDto {
     @IsOptional()
     @IsUUID()
     brandId?: string;
+
+    @ApiPropertyOptional({ description: "Reviews of the product" })
+    @IsOptional()
+    @IsArray()
+    @IsUUID("4", { each: true })
+    reviewIds?: string[];
 }

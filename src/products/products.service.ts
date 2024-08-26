@@ -6,6 +6,7 @@ import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { CategoryEntity } from "src/categories/entities/category.entity";
 import { BrandEntity } from "src/brands/entities/brand.entity";
+import { ReviewEntity } from "src/reviews/entity/review.entity";
 
 @Injectable()
 export class ProductsService {
@@ -16,6 +17,8 @@ export class ProductsService {
         private categoriesRepository: Repository<CategoryEntity>,
         @InjectRepository(BrandEntity)
         private readonly brandsRepository: Repository<BrandEntity>,
+        @InjectRepository(ReviewEntity)
+        private reviewsRepository: Repository<ReviewEntity>,
     ) {}
 
     async create(createProductDto: CreateProductDto): Promise<ProductEntity> {
@@ -63,7 +66,7 @@ export class ProductsService {
     async findOne(id: string): Promise<ProductEntity> {
         const product = await this.productsRepository.findOne({
             where: { id },
-            relations: ["category", "brand"],
+            relations: ["category", "brand", "reviews", "reviews.user"],
         });
         if (!product) {
             throw new NotFoundException(`Product with ID ${id} not found`);
@@ -89,7 +92,7 @@ export class ProductsService {
 
         const [result, total] = await this.productsRepository.findAndCount({
             where: whereConditions.length > 0 ? whereConditions : {},
-            relations: ["category", "brand"],
+            relations: ["category", "brand", "reviews"],
             skip: (page - 1) * limit,
             take: limit,
         });
@@ -111,7 +114,9 @@ export class ProductsService {
     ): Promise<ProductEntity> {
         const productToUpdate = await this.productsRepository.findOne({
             where: { id },
+            relations: ["category", "reviews"],
         });
+
         if (!productToUpdate) {
             throw new NotFoundException(`Product with ID ${id} not found`);
         }
@@ -128,10 +133,29 @@ export class ProductsService {
             productToUpdate.category = category;
         }
 
+        if (updateProductDto.reviewIds) {
+            const reviews = [];
+            for (const reviewId of updateProductDto.reviewIds) {
+                const review = await this.reviewsRepository.findOne({
+                    where: { id: reviewId },
+                });
+
+                if (!review) {
+                    throw new NotFoundException(
+                        `Review with ID ${reviewId} not found`,
+                    );
+                }
+                reviews.push(review);
+            }
+
+            productToUpdate.reviews = reviews;
+        }
+
         const updatedProduct = this.productsRepository.merge(
             productToUpdate,
             updateProductDto,
         );
+
         return this.productsRepository.save(updatedProduct);
     }
 }

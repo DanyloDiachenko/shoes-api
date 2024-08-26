@@ -16,6 +16,8 @@ import { UserEntity } from "./users/entites/user.entity";
 import { FavoritesModule } from "./favorites/favorites.module";
 import { OrderEntity } from "./orders/entities/order.entity";
 import { OrdersModule } from "./orders/orders.module";
+import { ReviewsModule } from "./reviews/reviews.module";
+import { ReviewEntity } from "./reviews/entity/review.entity";
 
 @Module({
     imports: [
@@ -41,6 +43,7 @@ import { OrdersModule } from "./orders/orders.module";
                     FavoriteEntity,
                     UserEntity,
                     OrderEntity,
+                    ReviewEntity,
                 ],
             }),
             inject: [ConfigService],
@@ -53,6 +56,7 @@ import { OrdersModule } from "./orders/orders.module";
         AuthModule,
         FavoritesModule,
         OrdersModule,
+        ReviewsModule,
     ],
     controllers: [],
     providers: [],

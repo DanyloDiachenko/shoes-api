@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { CategoryDto } from "src/categories/dto/category.dto";
 import { BrandDto } from "src/brands/dto/brand.dto";
+import { ReviewDto } from "src/reviews/dto/review.dto";
 
 export class ProductDto {
     @ApiProperty({
@@ -60,4 +61,10 @@ export class ProductDto {
         type: () => BrandDto,
     })
     brand: BrandDto;
+
+    @ApiProperty({
+        description: "Reviews of the product",
+        type: [ReviewDto],
+    })
+    reviews: ReviewDto[];
 }
