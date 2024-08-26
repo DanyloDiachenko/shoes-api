@@ -44,28 +44,50 @@ export class CategoriesService {
 
         await this.categoriesRepository.remove(categoryToDelete);
 
-        return { success: true }
+        return { success: true };
     }
 
     async findOne(id: string) {
         const findedCategory = await this.categoriesRepository.findOne({
             where: { id },
+            relations: ["products"],
         });
 
         if (!findedCategory) {
             throw new NotFoundException(`Category with ID ${id} not found`);
         }
 
-        return findedCategory;
+        return {
+            ...findedCategory,
+            productsQuantity: findedCategory.products.length,
+        };
     }
 
     async findAll() {
-        return await this.categoriesRepository.find();
+        const categories = await this.categoriesRepository
+            .createQueryBuilder("category")
+            .leftJoin("category.products", "product")
+            .select([
+                "category.id",
+                "category.slug",
+                "category.title",
+                "COUNT(product.id) AS productsQuantity",
+            ])
+            .groupBy("category.id")
+            .getRawMany();
+
+        return categories.map((category) => ({
+            id: category.category_id,
+            slug: category.category_slug,
+            title: category.category_title,
+            productsQuantity: Number(category.productsquantity),
+        }));
     }
 
     async update(id: string, updateCategoryDto: UpdateCategoryDto) {
         const categoryToUpdate = await this.categoriesRepository.findOne({
             where: { id },
+            relations: ["products"],
         });
 
         if (!categoryToUpdate) {
