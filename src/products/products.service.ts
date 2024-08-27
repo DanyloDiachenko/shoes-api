@@ -8,6 +8,7 @@ import { CategoryEntity } from "src/categories/entities/category.entity";
 import { BrandEntity } from "src/brands/entities/brand.entity";
 import { ReviewEntity } from "src/reviews/entity/review.entity";
 import { ColorEntity } from "src/colors/entity/color.entity";
+import { ProductWithRatingDto } from "./dto/productWithRaiting.dto";
 
 @Injectable()
 export class ProductsService {
@@ -24,7 +25,7 @@ export class ProductsService {
         private readonly colorsRepository: Repository<ColorEntity>,
     ) {}
 
-    async create(createProductDto: CreateProductDto): Promise<ProductEntity> {
+    async create(createProductDto: CreateProductDto) {
         const { categoryId, brandId, colorId, ...productData } =
             createProductDto;
 
@@ -60,7 +61,9 @@ export class ProductsService {
             color,
         });
 
-        return this.productsRepository.save(product);
+        await this.productsRepository.save(product);
+
+        return { ...product, rating: 0 };
     }
 
     async delete(id: string) {
@@ -77,15 +80,23 @@ export class ProductsService {
         return { success: true };
     }
 
-    async findOne(id: string): Promise<ProductEntity> {
+    async findOne(id: string) {
         const product = await this.productsRepository.findOne({
             where: { id },
             relations: ["category", "brand", "reviews", "reviews.user"],
         });
+
         if (!product) {
             throw new NotFoundException(`Product with ID ${id} not found`);
         }
-        return product;
+
+        const allMarks = product.reviews.reduce(
+            (acc, review) => acc + review.rating,
+            0,
+        );
+        const rating = Math.round(allMarks / product.reviews.length);
+
+        return { ...product, rating };
     }
 
     async findAll(
@@ -111,21 +122,28 @@ export class ProductsService {
             take: limit,
         });
 
+        const resultWithRating = result.map((product) => {
+            const allMarks = product.reviews.reduce(
+                (acc, review) => acc + review.rating,
+                0,
+            );
+            const rating = Math.round(allMarks / product.reviews.length);
+
+            return { ...product, rating };
+        });
+
         const totalPages = Math.ceil(total / limit);
         const activeCount = result.length;
         const remainingPages = totalPages - page;
 
         return {
-            data: result,
+            data: resultWithRating,
             activeCount: activeCount,
             remainingPages: remainingPages,
         };
     }
 
-    async update(
-        id: string,
-        updateProductDto: UpdateProductDto,
-    ): Promise<ProductEntity> {
+    async update(id: string, updateProductDto: UpdateProductDto) {
         const productToUpdate = await this.productsRepository.findOne({
             where: { id },
             relations: ["category", "reviews", "color", "brand"],
@@ -187,6 +205,14 @@ export class ProductsService {
             updateProductDto,
         );
 
-        return this.productsRepository.save(updatedProduct);
+        await this.productsRepository.save(updatedProduct);
+
+        const allMarks = updatedProduct.reviews.reduce(
+            (acc, review) => acc + review.rating,
+            0,
+        );
+        const rating = Math.round(allMarks / updatedProduct.reviews.length);
+
+        return { ...updatedProduct, rating: rating };
     }
 }

@@ -51,10 +51,7 @@ export class ReviewsService {
         return savedReview;
     }
 
-    async changeBenefit(
-        id: string,
-        type: "increase" | "decrease",
-    ) {
+    async changeBenefit(id: string, type: "increase" | "decrease") {
         if (type !== "increase" && type !== "decrease") {
             throw new BadRequestException("Invalid type");
         }

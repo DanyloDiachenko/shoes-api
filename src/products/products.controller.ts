@@ -21,6 +21,7 @@ import {
     ApiBody,
 } from "@nestjs/swagger";
 import { ProductDto } from "./dto/product.dto";
+import { ProductWithRatingDto } from "./dto/productWithRaiting.dto";
 
 @ApiTags("products")
 @Controller("products")
@@ -54,7 +55,7 @@ export class ProductsController {
     @ApiResponse({
         status: 200,
         description: "Return all products",
-        type: [ProductDto],
+        type: [ProductWithRatingDto],
     })
     async findAll(
         @Query("category") category?: string,
@@ -71,7 +72,7 @@ export class ProductsController {
     @ApiResponse({
         status: 200,
         description: "Product retrieved successfully",
-        type: ProductDto,
+        type: ProductWithRatingDto,
     })
     @ApiResponse({ status: 404, description: "Product not found" })
     async findOne(@Param() params: FindOneParamsDto) {
@@ -98,7 +99,7 @@ export class ProductsController {
     @ApiResponse({
         status: 200,
         description: "Product updated successfully",
-        type: ProductDto,
+        type: ProductWithRatingDto,
     })
     @ApiResponse({ status: 404, description: "Product not found" })
     async update(

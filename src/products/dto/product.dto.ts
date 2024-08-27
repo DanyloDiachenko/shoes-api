@@ -26,7 +26,7 @@ export class ProductDto {
     quantity: number;
 
     @ApiProperty({ description: "Price of the product" })
-    price: string;
+    price: number;
 
     @ApiProperty({
         description: "Main image URL of the product",
