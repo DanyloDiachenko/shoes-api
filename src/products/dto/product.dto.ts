@@ -55,6 +55,9 @@ export class ProductDto {
     })
     mainCategory: CategoryDto;
 
+    @ApiProperty({ description: "Categories of the product" })
+    categories: CategoryDto[];
+
     @ApiProperty({
         description: "Brand of the product",
         type: () => BrandDto,

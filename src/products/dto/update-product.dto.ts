@@ -70,6 +70,15 @@ export class UpdateProductDto {
     @IsUUID()
     mainCategoryId?: string;
 
+    @ApiPropertyOptional({
+        description: "Category IDs of the product",
+        type: [String],
+    })
+    @IsOptional()
+    @IsArray()
+    @IsUUID("4", { each: true })
+    categoryIds?: string[];
+        
     @ApiPropertyOptional({ description: "ID of the brand of the product" })
     @IsOptional()
     @IsUUID()

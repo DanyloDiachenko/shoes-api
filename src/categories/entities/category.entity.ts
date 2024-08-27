@@ -21,4 +21,7 @@ export class CategoryEntity {
 
     @OneToMany(() => ProductEntity, (product) => product.mainCategory)
     products: ProductEntity[];
+
+    @OneToMany(() => ProductEntity, (product) => product.categories)
+    additionalProducts: ProductEntity[];
 }

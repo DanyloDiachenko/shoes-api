@@ -4,6 +4,8 @@ import {
     PrimaryGeneratedColumn,
     ManyToOne,
     OneToMany,
+    ManyToMany,
+    JoinTable,
 } from "typeorm";
 import { CategoryEntity } from "src/categories/entities/category.entity";
 import { BrandEntity } from "src/brands/entities/brand.entity";
@@ -42,6 +44,10 @@ export class ProductEntity {
 
     @ManyToOne(() => CategoryEntity, (category) => category.products)
     mainCategory: CategoryEntity;
+
+    @ManyToMany(() => CategoryEntity)
+    @JoinTable()
+    categories: CategoryEntity[];
 
     @ManyToOne(() => BrandEntity, (brand) => brand.products)
     brand: BrandEntity;

@@ -7,6 +7,7 @@ import {
     IsNumber,
 } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
+import { CategoryEntity } from "src/categories/entities/category.entity";
 
 export class CreateProductDto {
     @ApiProperty({ description: "Title of the product" })
@@ -58,6 +59,11 @@ export class CreateProductDto {
     })
     @IsUUID()
     mainCategoryId: string;
+
+    @ApiProperty({ description: "Category IDs of the product" })
+    @IsArray()
+    @IsUUID("4", { each: true })
+    categoryIds: string[];
 
     @ApiProperty({ description: "ID of the brand of the product" })
     @IsUUID()

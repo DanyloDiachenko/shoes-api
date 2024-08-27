@@ -29,8 +29,14 @@ export class ProductsService {
     ) {}
 
     async create(createProductDto: CreateProductDto) {
-        const { mainCategoryId, brandId, colorId, sizeIds, ...productData } =
-            createProductDto;
+        const {
+            mainCategoryId,
+            brandId,
+            colorId,
+            sizeIds,
+            categoryIds,
+            ...productData
+        } = createProductDto;
 
         const mainCategory = await this.categoriesRepository.findOne({
             where: { id: mainCategoryId },
@@ -70,8 +76,24 @@ export class ProductsService {
             sizes.push(size);
         }
 
+        let categories: CategoryEntity[] = [];
+        for (const categoryId of categoryIds) {
+            const category = await this.categoriesRepository.findOne({
+                where: { id: categoryId },
+            });
+
+            if (!category) {
+                throw new NotFoundException(
+                    `Size with ID ${categoryId} not found`,
+                );
+            }
+
+            categories.push(category);
+        }
+
         const product = this.productsRepository.create({
             ...productData,
+            categories,
             sizes,
             mainCategory,
             brand,
@@ -101,12 +123,13 @@ export class ProductsService {
         const product = await this.productsRepository.findOne({
             where: { id },
             relations: [
-                "category",
+                "mainCategory",
                 "brand",
                 "reviews",
                 "reviews.user",
                 "sizes",
                 "color",
+                "categories",
             ],
         });
 
@@ -128,7 +151,14 @@ export class ProductsService {
 
         const [result, total] = await this.productsRepository.findAndCount({
             where: whereConditions.length > 0 ? whereConditions : {},
-            relations: ["category", "brand", "reviews", "color", "sizes"],
+            relations: [
+                "mainCategory",
+                "brand",
+                "reviews",
+                "color",
+                "sizes",
+                "categories",
+            ],
             skip: (page - 1) * limit,
             take: limit,
         });
@@ -157,7 +187,14 @@ export class ProductsService {
     async update(id: string, updateProductDto: UpdateProductDto) {
         const productToUpdate = await this.productsRepository.findOne({
             where: { id },
-            relations: ["category", "reviews", "color", "brand", "sizes"],
+            relations: [
+                "mainCategory",
+                "reviews",
+                "color",
+                "brand",
+                "sizes",
+                "categories",
+            ],
         });
 
         if (!productToUpdate) {
@@ -190,6 +227,28 @@ export class ProductsService {
             }
 
             productToUpdate.mainCategory = category;
+        }
+
+        if (updateProductDto.categoryIds) {
+            let categories: CategoryEntity[] = [];
+
+            for (const categoryId of updateProductDto.categoryIds) {
+                const category = await this.categoriesRepository.findOne({
+                    where: {
+                        id: categoryId,
+                    },
+                });
+
+                if (!category) {
+                    throw new NotFoundException(
+                        `Category with ID ${categoryId} not found`,
+                    );
+                }
+
+                categories.push(category);
+            }
+
+            productToUpdate.categories = categories;
         }
 
         if (updateProductDto.reviewIds) {
