@@ -3,6 +3,7 @@ import { CategoryDto } from "src/categories/dto/category.dto";
 import { BrandDto } from "src/brands/dto/brand.dto";
 import { ReviewDto } from "src/reviews/dto/review.dto";
 import { ColorDto } from "src/colors/dto/color.dto";
+import { SizeDto } from "src/sizes/dto/size.dto";
 
 export class ProductDto {
     @ApiProperty({
@@ -39,9 +40,6 @@ export class ProductDto {
     })
     images: string[];
 
-    @ApiProperty({ description: "Size of the product" })
-    size: number;
-
     @ApiProperty({ description: "Color of the product", type: () => ColorDto })
     color: ColorDto;
 
@@ -68,4 +66,10 @@ export class ProductDto {
         type: [ReviewDto],
     })
     reviews: ReviewDto[];
+
+    @ApiProperty({
+        description: "Sizes of the product",
+        type: [SizeDto],
+    })
+    sizes: SizeDto[];
 }

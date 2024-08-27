@@ -20,6 +20,8 @@ import { ReviewsModule } from "./reviews/reviews.module";
 import { ReviewEntity } from "./reviews/entity/review.entity";
 import { ColorEntity } from "./colors/entity/color.entity";
 import { ColorsModule } from "./colors/colors.module";
+import { SizeEntity } from "./sizes/entity/size.entity";
+import { SizesModule } from "./sizes/sizes.module";
 
 @Module({
     imports: [
@@ -48,6 +50,7 @@ import { ColorsModule } from "./colors/colors.module";
                     ReviewEntity,
                     ColorEntity,
                     BrandEntity,
+                    SizeEntity,
                 ],
             }),
             inject: [ConfigService],
@@ -62,6 +65,7 @@ import { ColorsModule } from "./colors/colors.module";
         OrdersModule,
         ReviewsModule,
         ColorsModule,
+        SizesModule,
     ],
     controllers: [],
     providers: [],

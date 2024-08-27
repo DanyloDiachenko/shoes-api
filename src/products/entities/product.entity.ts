@@ -9,6 +9,7 @@ import { CategoryEntity } from "src/categories/entities/category.entity";
 import { BrandEntity } from "src/brands/entities/brand.entity";
 import { ReviewEntity } from "src/reviews/entity/review.entity";
 import { ColorEntity } from "src/colors/entity/color.entity";
+import { SizeEntity } from "src/sizes/entity/size.entity";
 
 @Entity("products")
 export class ProductEntity {
@@ -33,9 +34,6 @@ export class ProductEntity {
     @Column("simple-array")
     images: string[];
 
-    @Column("int")
-    size: number;
-
     @ManyToOne(() => ColorEntity, (color) => color.product)
     color: ColorEntity;
 
@@ -50,4 +48,7 @@ export class ProductEntity {
 
     @OneToMany(() => ReviewEntity, (review) => review.product)
     reviews: ReviewEntity[];
+
+    @OneToMany(() => SizeEntity, (size) => size.product)
+    sizes: SizeEntity[];
 }

@@ -7,6 +7,7 @@ import { CategoryEntity } from "src/categories/entities/category.entity";
 import { BrandEntity } from "src/brands/entities/brand.entity";
 import { ReviewEntity } from "src/reviews/entity/review.entity";
 import { ColorEntity } from "src/colors/entity/color.entity";
+import { SizeEntity } from "src/sizes/entity/size.entity";
 
 @Module({
     imports: [
@@ -16,6 +17,7 @@ import { ColorEntity } from "src/colors/entity/color.entity";
             BrandEntity,
             ReviewEntity,
             ColorEntity,
+            SizeEntity,
         ]),
     ],
     controllers: [ProductsController],

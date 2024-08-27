@@ -62,4 +62,12 @@ export class CreateProductDto {
     @ApiProperty({ description: "ID of the brand of the product" })
     @IsUUID()
     brandId: string;
+
+    @ApiProperty({
+        description: "Size IDS of the product",
+        type: [String],
+    })
+    @IsArray()
+    @IsUUID("4", { each: true })
+    sizeIds: string[];
 }

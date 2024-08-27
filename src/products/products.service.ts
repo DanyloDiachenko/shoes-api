@@ -9,6 +9,7 @@ import { BrandEntity } from "src/brands/entities/brand.entity";
 import { ReviewEntity } from "src/reviews/entity/review.entity";
 import { ColorEntity } from "src/colors/entity/color.entity";
 import { ProductWithRatingDto } from "./dto/productWithRaiting.dto";
+import { SizeEntity } from "src/sizes/entity/size.entity";
 
 @Injectable()
 export class ProductsService {
@@ -23,10 +24,12 @@ export class ProductsService {
         private readonly reviewsRepository: Repository<ReviewEntity>,
         @InjectRepository(ColorEntity)
         private readonly colorsRepository: Repository<ColorEntity>,
+        @InjectRepository(SizeEntity)
+        private readonly sizesRepository: Repository<SizeEntity>,
     ) {}
 
     async create(createProductDto: CreateProductDto) {
-        const { categoryId, brandId, colorId, ...productData } =
+        const { categoryId, brandId, colorId, sizeIds, ...productData } =
             createProductDto;
 
         const category = await this.categoriesRepository.findOne({
@@ -54,8 +57,22 @@ export class ProductsService {
             throw new NotFoundException(`Color with ID ${colorId} not found`);
         }
 
+        let sizes: SizeEntity[] = [];
+        for (const sizeId of sizeIds) {
+            const size = await this.sizesRepository.findOne({
+                where: { id: sizeId },
+            });
+
+            if (!size) {
+                throw new NotFoundException(`Size with ID ${sizeId} not found`);
+            }
+
+            sizes.push(size);
+        }
+
         const product = this.productsRepository.create({
             ...productData,
+            sizes,
             category,
             brand,
             color,
@@ -83,7 +100,14 @@ export class ProductsService {
     async findOne(id: string) {
         const product = await this.productsRepository.findOne({
             where: { id },
-            relations: ["category", "brand", "reviews", "reviews.user"],
+            relations: [
+                "category",
+                "brand",
+                "reviews",
+                "reviews.user",
+                "sizes",
+                "color",
+            ],
         });
 
         if (!product) {
@@ -117,7 +141,7 @@ export class ProductsService {
 
         const [result, total] = await this.productsRepository.findAndCount({
             where: whereConditions.length > 0 ? whereConditions : {},
-            relations: ["category", "brand", "reviews", "color"],
+            relations: ["category", "brand", "reviews", "color", "sizes"],
             skip: (page - 1) * limit,
             take: limit,
         });
@@ -146,7 +170,7 @@ export class ProductsService {
     async update(id: string, updateProductDto: UpdateProductDto) {
         const productToUpdate = await this.productsRepository.findOne({
             where: { id },
-            relations: ["category", "reviews", "color", "brand"],
+            relations: ["category", "reviews", "color", "brand", "sizes"],
         });
 
         if (!productToUpdate) {
@@ -198,6 +222,28 @@ export class ProductsService {
             }
 
             productToUpdate.reviews = reviews;
+        }
+
+        if (updateProductDto.sizeIds) {
+            let sizes: SizeEntity[] = [];
+
+            for (const sizeId of updateProductDto.sizeIds) {
+                const size = await this.sizesRepository.findOne({
+                    where: {
+                        id: sizeId,
+                    },
+                });
+
+                if (!size) {
+                    throw new NotFoundException(
+                        `Size with ID ${sizeId} not found`,
+                    );
+                }
+
+                sizes.push(size);
+            }
+
+            productToUpdate.sizes = sizes;
         }
 
         const updatedProduct = this.productsRepository.merge(
