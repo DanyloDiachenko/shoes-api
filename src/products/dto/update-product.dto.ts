@@ -19,10 +19,12 @@ export class UpdateProductDto {
     @IsString()
     description?: string;
 
-    @ApiPropertyOptional({ description: "Available quantity of the product" })
+    @ApiPropertyOptional({
+        description: "Available quantity in stock of the product",
+    })
     @IsOptional()
     @IsInt()
-    quantity?: number;
+    quantityInStock?: number;
 
     @ApiPropertyOptional({ description: "Price of the product" })
     @IsOptional()

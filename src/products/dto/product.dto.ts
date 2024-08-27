@@ -22,9 +22,9 @@ export class ProductDto {
     description: string;
 
     @ApiProperty({
-        description: "Available quantity of the product",
+        description: "Available quantity in stock of the product",
     })
-    quantity: number;
+    quantityInStock: number;
 
     @ApiProperty({ description: "Price of the product" })
     price: number;

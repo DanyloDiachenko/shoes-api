@@ -17,9 +17,9 @@ export class CreateProductDto {
     @IsString()
     description: string;
 
-    @ApiProperty({ description: "Available quantity of the product" })
+    @ApiProperty({ description: "Available quantity in stock of the product" })
     @IsInt()
-    quantity: number;
+    quantityInStock: number;
 
     @ApiProperty({ description: "Price of the product" })
     @IsNumber({ allowInfinity: false, allowNaN: false }, { each: false })

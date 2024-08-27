@@ -23,7 +23,7 @@ export class ProductEntity {
     description: string;
 
     @Column("int")
-    quantity: number;
+    quantityInStock: number;
 
     @Column("decimal")
     price: number;
