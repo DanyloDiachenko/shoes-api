@@ -2,6 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { CategoryDto } from "src/categories/dto/category.dto";
 import { BrandDto } from "src/brands/dto/brand.dto";
 import { ReviewDto } from "src/reviews/dto/review.dto";
+import { ColorDto } from "src/colors/dto/color.dto";
 
 export class ProductDto {
     @ApiProperty({
@@ -41,8 +42,8 @@ export class ProductDto {
     @ApiProperty({ description: "Size of the product" })
     size: number;
 
-    @ApiProperty({ description: "Color of the product" })
-    color: string;
+    @ApiProperty({ description: "Color of the product", type: () => ColorDto })
+    color: ColorDto;
 
     @ApiProperty({
         description: "Discount percentage for the product, if any",

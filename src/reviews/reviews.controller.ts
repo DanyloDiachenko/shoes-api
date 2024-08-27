@@ -5,12 +5,14 @@ import {
     ApiBody,
     ApiOperation,
     ApiResponse,
+    ApiTags,
 } from "@nestjs/swagger";
 import { CreateReviewDto } from "./dto/create-review.dto";
 import { ReviewDto } from "./dto/review.dto";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { FindOneParamsDto } from "helpers/find-one-params.dto";
 
+@ApiTags("reviews")
 @Controller("reviews")
 export class ReviewsController {
     constructor(private readonly reviewsService: ReviewsService) {}
@@ -26,6 +28,7 @@ export class ReviewsController {
         description: "Review created successfully",
         type: ReviewDto,
     })
+    @ApiResponse({ status: 400, description: "Bad Request" })
     async create(@Body() createReviewDto: CreateReviewDto, @Req() req: any) {
         return await this.reviewsService.create(createReviewDto, req.user);
     }

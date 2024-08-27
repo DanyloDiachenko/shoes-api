@@ -39,6 +39,7 @@ export class AddressesController {
         type: AddressDto,
     })
     @ApiResponse({ status: 401, description: "Unauthorized." })
+    @ApiResponse({ status: 400, description: "Bad Request" })
     async create(@Body() createAddressDto: CreateAddressDto, @Req() req: any) {
         return await this.addressesService.create(
             createAddressDto,

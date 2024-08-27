@@ -7,6 +7,7 @@ import { UpdateProductDto } from "./dto/update-product.dto";
 import { CategoryEntity } from "src/categories/entities/category.entity";
 import { BrandEntity } from "src/brands/entities/brand.entity";
 import { ReviewEntity } from "src/reviews/entity/review.entity";
+import { ColorEntity } from "src/colors/entity/color.entity";
 
 @Injectable()
 export class ProductsService {
@@ -14,15 +15,18 @@ export class ProductsService {
         @InjectRepository(ProductEntity)
         private readonly productsRepository: Repository<ProductEntity>,
         @InjectRepository(CategoryEntity)
-        private categoriesRepository: Repository<CategoryEntity>,
+        private readonly categoriesRepository: Repository<CategoryEntity>,
         @InjectRepository(BrandEntity)
         private readonly brandsRepository: Repository<BrandEntity>,
         @InjectRepository(ReviewEntity)
-        private reviewsRepository: Repository<ReviewEntity>,
+        private readonly reviewsRepository: Repository<ReviewEntity>,
+        @InjectRepository(ColorEntity)
+        private readonly colorsRepository: Repository<ColorEntity>,
     ) {}
 
     async create(createProductDto: CreateProductDto): Promise<ProductEntity> {
-        const { categoryId, brandId, ...productData } = createProductDto;
+        const { categoryId, brandId, colorId, ...productData } =
+            createProductDto;
 
         const category = await this.categoriesRepository.findOne({
             where: { id: categoryId },
@@ -40,10 +44,20 @@ export class ProductsService {
             throw new NotFoundException(`Brand with ID ${brandId} not found`);
         }
 
+        const color = await this.colorsRepository.findOne({
+            where: {
+                id: colorId,
+            },
+        });
+        if (!color) {
+            throw new NotFoundException(`Color with ID ${colorId} not found`);
+        }
+
         const product = this.productsRepository.create({
             ...productData,
             category,
             brand,
+            color,
         });
 
         return this.productsRepository.save(product);
@@ -92,7 +106,7 @@ export class ProductsService {
 
         const [result, total] = await this.productsRepository.findAndCount({
             where: whereConditions.length > 0 ? whereConditions : {},
-            relations: ["category", "brand", "reviews"],
+            relations: ["category", "brand", "reviews", "color"],
             skip: (page - 1) * limit,
             take: limit,
         });
@@ -114,27 +128,44 @@ export class ProductsService {
     ): Promise<ProductEntity> {
         const productToUpdate = await this.productsRepository.findOne({
             where: { id },
-            relations: ["category", "reviews"],
+            relations: ["category", "reviews", "color", "brand"],
         });
 
         if (!productToUpdate) {
             throw new NotFoundException(`Product with ID ${id} not found`);
         }
 
+        if (updateProductDto.colorId) {
+            const color = await this.colorsRepository.findOne({
+                where: { id: updateProductDto.colorId },
+            });
+
+            if (!color) {
+                throw new NotFoundException(
+                    `Color with ID ${updateProductDto.colorId} not found`,
+                );
+            }
+
+            productToUpdate.color = color;
+        }
+
         if (updateProductDto.categoryId) {
             const category = await this.categoriesRepository.findOne({
                 where: { id: updateProductDto.categoryId },
             });
+
             if (!category) {
                 throw new NotFoundException(
                     `Category with ID ${updateProductDto.categoryId} not found`,
                 );
             }
+
             productToUpdate.category = category;
         }
 
         if (updateProductDto.reviewIds) {
             const reviews = [];
+
             for (const reviewId of updateProductDto.reviewIds) {
                 const review = await this.reviewsRepository.findOne({
                     where: { id: reviewId },

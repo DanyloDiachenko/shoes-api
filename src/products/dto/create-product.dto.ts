@@ -41,9 +41,9 @@ export class CreateProductDto {
     @IsInt()
     size: number;
 
-    @ApiProperty({ description: "Color of the product" })
-    @IsString()
-    color: string;
+    @ApiProperty({ description: "Color ID of the product" })
+    @IsUUID()
+    colorId: string;
 
     @ApiProperty({
         description: "Discount percentage for the product, if any",

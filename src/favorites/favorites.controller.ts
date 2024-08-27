@@ -39,12 +39,13 @@ export class FavoritesController {
     })
     @ApiResponse({ status: 401, description: "Unauthorized" })
     @ApiResponse({ status: 404, description: "Product with ID not found" })
+    @ApiResponse({ status: 400, description: "Bad Request" })
     async createByProductId(
         @Body() createFavoriteDto: CreateFavoriteDto,
         @Req() req: any,
     ) {
         const userId = req.user.id;
-        
+
         return await this.favoritesService.createByProductId(
             createFavoriteDto.productId,
             userId,
@@ -59,7 +60,7 @@ export class FavoritesController {
     @ApiResponse({
         status: 200,
         description: "The product has been removed from favorites.",
-        example: { success: true }
+        example: { success: true },
     })
     @ApiResponse({ status: 404, description: "Favorite not found." })
     async delete(@Param() params: FindOneParamsDto) {

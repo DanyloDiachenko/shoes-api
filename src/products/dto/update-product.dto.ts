@@ -48,10 +48,10 @@ export class UpdateProductDto {
     @IsInt()
     size?: number;
 
-    @ApiPropertyOptional({ description: "Color of the product" })
+    @ApiPropertyOptional({ description: "Color ID of the product" })
     @IsOptional()
-    @IsString()
-    color?: string;
+    @IsUUID()
+    colorId: string;
 
     @ApiPropertyOptional({
         description: "Discount percentage for the product, if any",

@@ -116,6 +116,7 @@ export class ProductsController {
         description: "Product created successfully",
         type: ProductDto,
     })
+    @ApiResponse({ status: 400, description: "Bad Request" })
     async create(@Body() createProductDto: CreateProductDto) {
         return await this.productsService.create(createProductDto);
     }

@@ -18,6 +18,8 @@ import { OrderEntity } from "./orders/entities/order.entity";
 import { OrdersModule } from "./orders/orders.module";
 import { ReviewsModule } from "./reviews/reviews.module";
 import { ReviewEntity } from "./reviews/entity/review.entity";
+import { ColorEntity } from "./colors/entity/color.entity";
+import { ColorsModule } from "./colors/colors.module";
 
 @Module({
     imports: [
@@ -44,6 +46,8 @@ import { ReviewEntity } from "./reviews/entity/review.entity";
                     UserEntity,
                     OrderEntity,
                     ReviewEntity,
+                    ColorEntity,
+                    BrandEntity,
                 ],
             }),
             inject: [ConfigService],
@@ -57,6 +61,7 @@ import { ReviewEntity } from "./reviews/entity/review.entity";
         FavoritesModule,
         OrdersModule,
         ReviewsModule,
+        ColorsModule,
     ],
     controllers: [],
     providers: [],

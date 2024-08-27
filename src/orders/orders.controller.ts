@@ -28,6 +28,7 @@ export class OrdersController {
         type: OrderDto,
     })
     @ApiResponse({ status: 401, description: "Unauthorized" })
+    @ApiResponse({ status: 400, description: "Bad Request" })
     async create(
         @Body() createOrderDto: CreateOrderDto,
         @Req() req: any,
