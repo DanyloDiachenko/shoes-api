@@ -29,15 +29,15 @@ export class ProductsService {
     ) {}
 
     async create(createProductDto: CreateProductDto) {
-        const { categoryId, brandId, colorId, sizeIds, ...productData } =
+        const { mainCategoryId, brandId, colorId, sizeIds, ...productData } =
             createProductDto;
 
-        const category = await this.categoriesRepository.findOne({
-            where: { id: categoryId },
+        const mainCategory = await this.categoriesRepository.findOne({
+            where: { id: mainCategoryId },
         });
-        if (!category) {
+        if (!mainCategory) {
             throw new NotFoundException(
-                `Category with ID ${categoryId} not found`,
+                `Category with ID ${mainCategoryId} not found`,
             );
         }
 
@@ -73,7 +73,7 @@ export class ProductsService {
         const product = this.productsRepository.create({
             ...productData,
             sizes,
-            category,
+            mainCategory,
             brand,
             color,
         });
@@ -123,21 +123,8 @@ export class ProductsService {
         return { ...product, rating };
     }
 
-    async findAll(
-        category?: string,
-        brand?: string,
-        page: number = 1,
-        limit: number = 5,
-    ) {
+    async findAll(page: number = 1, limit: number = 5) {
         const whereConditions = [];
-
-        if (category) {
-            whereConditions.push({ category: { slug: category } });
-        }
-
-        if (brand) {
-            whereConditions.push({ brand: { slug: brand } });
-        }
 
         const [result, total] = await this.productsRepository.findAndCount({
             where: whereConditions.length > 0 ? whereConditions : {},
@@ -191,18 +178,18 @@ export class ProductsService {
             productToUpdate.color = color;
         }
 
-        if (updateProductDto.categoryId) {
+        if (updateProductDto.mainCategoryId) {
             const category = await this.categoriesRepository.findOne({
-                where: { id: updateProductDto.categoryId },
+                where: { id: updateProductDto.mainCategoryId },
             });
 
             if (!category) {
                 throw new NotFoundException(
-                    `Category with ID ${updateProductDto.categoryId} not found`,
+                    `Category with ID ${updateProductDto.mainCategoryId} not found`,
                 );
             }
 
-            productToUpdate.category = category;
+            productToUpdate.mainCategory = category;
         }
 
         if (updateProductDto.reviewIds) {

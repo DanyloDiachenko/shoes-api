@@ -53,7 +53,7 @@ export class ProductDto {
         description: "Category of the product",
         type: () => CategoryDto,
     })
-    category: CategoryDto;
+    mainCategory: CategoryDto;
 
     @ApiProperty({
         description: "Brand of the product",

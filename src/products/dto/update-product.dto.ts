@@ -64,11 +64,11 @@ export class UpdateProductDto {
     discountPercentage?: number;
 
     @ApiPropertyOptional({
-        description: "ID of the category to which the product belongs",
+        description: "ID of the main category to which the product belongs",
     })
     @IsOptional()
     @IsUUID()
-    categoryId?: string;
+    mainCategoryId?: string;
 
     @ApiPropertyOptional({ description: "ID of the brand of the product" })
     @IsOptional()

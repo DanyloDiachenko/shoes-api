@@ -54,10 +54,10 @@ export class CreateProductDto {
     discountPercentage?: number;
 
     @ApiProperty({
-        description: "ID of the category to which the product belongs",
+        description: "ID of the main category to which the product belongs",
     })
     @IsUUID()
-    categoryId: string;
+    mainCategoryId: string;
 
     @ApiProperty({ description: "ID of the brand of the product" })
     @IsUUID()

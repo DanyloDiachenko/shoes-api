@@ -41,7 +41,7 @@ export class ProductEntity {
     discountPercentage?: number;
 
     @ManyToOne(() => CategoryEntity, (category) => category.products)
-    category: CategoryEntity;
+    mainCategory: CategoryEntity;
 
     @ManyToOne(() => BrandEntity, (brand) => brand.products)
     brand: BrandEntity;

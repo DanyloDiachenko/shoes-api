@@ -58,12 +58,10 @@ export class ProductsController {
         type: [ProductWithRatingDto],
     })
     async findAll(
-        @Query("category") category?: string,
-        @Query("brand") brand?: string,
         @Query("page") page: number = 1,
         @Query("limit") limit: number = 5,
     ) {
-        return this.productsService.findAll(category, brand, page, limit);
+        return this.productsService.findAll(page, limit);
     }
 
     @Get(":id")
