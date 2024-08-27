@@ -19,6 +19,6 @@ export class CategoryEntity {
     @Column({ unique: true })
     slug: string;
 
-    @OneToMany(() => ProductEntity, (product) => product.category)
+    @OneToMany(() => ProductEntity, (product) => product.mainCategory)
     products: ProductEntity[];
 }
