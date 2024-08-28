@@ -38,9 +38,18 @@ export class CreateProductDto {
     @IsString({ each: true })
     images: string[];
 
-    @ApiProperty({ description: "Size of the product" })
+    @ApiProperty({ description: "Product information of the product" })
+    @IsString()
+    productInformtion: string;
+
+    @ApiProperty({ description: "Additional information of the product" })
+    @IsString()
+    additionalInformation: string;
+
+    @ApiProperty({ description: "Number of product was purchased" })
+    @IsNumber()
     @IsInt()
-    size: number;
+    purchasedNumber: number;
 
     @ApiProperty({ description: "Color ID of the product" })
     @IsUUID()

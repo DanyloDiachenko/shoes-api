@@ -33,6 +33,15 @@ export class ProductEntity {
     @Column()
     mainImage: string;
 
+    @Column()
+    productInformtion: string;
+
+    @Column()
+    additionalInformation: string;
+
+    @Column("int")
+    purchasedNumber: number;
+
     @Column("simple-array")
     images: string[];
 

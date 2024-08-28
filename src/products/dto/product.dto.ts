@@ -26,6 +26,15 @@ export class ProductDto {
     })
     quantityInStock: number;
 
+    @ApiProperty({ description: "Product information of the product" })
+    productInformtion: string;
+
+    @ApiProperty({ description: "Additional information of the product" })
+    additionalInformation: string;
+
+    @ApiProperty({ description: "Number of product was purchased" })
+    purchasedNumber: number;
+
     @ApiProperty({ description: "Price of the product" })
     price: number;
 

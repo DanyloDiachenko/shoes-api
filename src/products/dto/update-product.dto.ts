@@ -63,6 +63,23 @@ export class UpdateProductDto {
     @IsNumber({ allowInfinity: false, allowNaN: false }, { each: false })
     discountPercentage?: number;
 
+    @ApiPropertyOptional({ description: "Product information of the product" })
+    @IsOptional()
+    @IsString()
+    productInformtion?: string;
+
+    @ApiPropertyOptional({
+        description: "Additional information of the product",
+    })
+    @IsOptional()
+    @IsString()
+    additionalInformation?: string;
+
+    @ApiPropertyOptional({ description: "Number of product was purchased" })
+    @IsOptional()
+    @IsNumber()
+    purchasedNumber?: number;
+
     @ApiPropertyOptional({
         description: "ID of the main category to which the product belongs",
     })
@@ -78,7 +95,7 @@ export class UpdateProductDto {
     @IsArray()
     @IsUUID("4", { each: true })
     categoryIds?: string[];
-        
+
     @ApiPropertyOptional({ description: "ID of the brand of the product" })
     @IsOptional()
     @IsUUID()
