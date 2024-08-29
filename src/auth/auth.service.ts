@@ -6,7 +6,7 @@ import {
 import { JwtService } from "@nestjs/jwt";
 import { UsersService } from "src/users/users.service";
 import * as argon2 from "argon2";
-import { IUser } from "types/user.interface";
+import { IUser } from "src/types/user.interface";
 
 @Injectable()
 export class AuthService {

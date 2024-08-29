@@ -10,7 +10,7 @@ import {
 import { CategoriesService } from "./categories.service";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 import { UpdateCategoryDto } from "./dto/update-category.dto";
-import { FindOneParamsDto } from "../../helpers/find-one-params.dto";
+import { FindOneParamsDto } from "../helpers/find-one-params.dto";
 import {
     ApiTags,
     ApiOperation,

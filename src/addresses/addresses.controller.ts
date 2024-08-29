@@ -12,7 +12,7 @@ import {
 } from "@nestjs/common";
 import { CreateAddressDto } from "./dto/create-address.dto";
 import { AddressesService } from "./addresses.service";
-import { FindOneParamsDto } from "helpers/find-one-params.dto";
+import { FindOneParamsDto } from "src/helpers/find-one-params.dto";
 import { UpdateAddressDto } from "./dto/update-address.dto";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import {

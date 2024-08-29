@@ -9,7 +9,7 @@ import {
     UseGuards,
 } from "@nestjs/common";
 import { FavoritesService } from "./favorites.service";
-import { FindOneParamsDto } from "helpers/find-one-params.dto";
+import { FindOneParamsDto } from "src/helpers/find-one-params.dto";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { CreateFavoriteDto } from "./dto/create-favorite.dto";
 import {

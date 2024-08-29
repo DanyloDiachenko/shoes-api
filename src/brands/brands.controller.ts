@@ -9,7 +9,7 @@ import {
 } from "@nestjs/common";
 import { BrandsService } from "./brands.service";
 import { CreateBrandDto } from "./dto/create-brand.dto";
-import { FindOneParamsDto } from "helpers/find-one-params.dto";
+import { FindOneParamsDto } from "src/helpers/find-one-params.dto";
 import { UpdateBrandDto } from "./dto/update-brand.dto";
 import {
     ApiTags,

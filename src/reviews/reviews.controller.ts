@@ -10,7 +10,7 @@ import {
 import { CreateReviewDto } from "./dto/create-review.dto";
 import { ReviewDto } from "./dto/review.dto";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
-import { FindOneParamsDto } from "helpers/find-one-params.dto";
+import { FindOneParamsDto } from "src/helpers/find-one-params.dto";
 
 @ApiTags("reviews")
 @Controller("reviews")
