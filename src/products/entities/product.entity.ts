@@ -28,7 +28,10 @@ export class ProductEntity {
     quantityInStock: number;
 
     @Column("decimal")
-    price: number;
+    priceUsd: number;
+
+    @Column("decimal")
+    priceEur: number;
 
     @Column()
     mainImage: string;

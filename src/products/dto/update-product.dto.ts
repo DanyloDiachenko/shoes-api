@@ -26,10 +26,15 @@ export class UpdateProductDto {
     @IsInt()
     quantityInStock?: number;
 
-    @ApiPropertyOptional({ description: "Price of the product" })
+    @ApiPropertyOptional({ description: "Price of the product in USD" })
     @IsOptional()
     @IsNumber({ allowInfinity: false, allowNaN: false }, { each: false })
-    price?: number;
+    priceUsd?: number;
+
+    @ApiPropertyOptional({ description: "Price of the product in EUR" })
+    @IsOptional()
+    @IsNumber({ allowInfinity: false, allowNaN: false }, { each: false })
+    priceEur?: number;
 
     @ApiPropertyOptional({ description: "Main image URL of the product" })
     @IsOptional()
