@@ -35,8 +35,8 @@ export class ProductDto {
     @ApiProperty({ description: "Number of product was purchased" })
     purchasedNumber: number;
 
-    @ApiProperty({ description: "Price of the product in USD" })
-    priceUsd: number;
+    @ApiProperty({ description: "Price of the product in UAH" })
+    priceUah: number;
 
     @ApiProperty({ description: "Price of the product in EUR" })
     priceEur: number;

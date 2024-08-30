@@ -22,9 +22,9 @@ export class CreateProductDto {
     @IsInt()
     quantityInStock: number;
 
-    @ApiProperty({ description: "Price of the product in USD" })
+    @ApiProperty({ description: "Price of the product in UAH" })
     @IsNumber({ allowInfinity: false, allowNaN: false }, { each: false })
-    priceUsd: number;
+    priceUah: number;
 
     @ApiProperty({ description: "Price of the product in EUR" })
     @IsNumber({ allowInfinity: false, allowNaN: false }, { each: false })

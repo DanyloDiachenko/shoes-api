@@ -28,7 +28,7 @@ export class ProductEntity {
     quantityInStock: number;
 
     @Column("decimal")
-    priceUsd: number;
+    priceUah: number;
 
     @Column("decimal")
     priceEur: number;
