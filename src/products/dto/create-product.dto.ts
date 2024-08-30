@@ -60,12 +60,12 @@ export class CreateProductDto {
     colorId: string;
 
     @ApiProperty({
-        description: "Discount percentage for the product, if any",
+        description: "Price of the product with discount, if any",
         nullable: true,
     })
     @IsOptional()
     @IsNumber({ allowInfinity: false, allowNaN: false }, { each: false })
-    discountPercentage?: number;
+    priceWithDiscount?: number;
 
     @ApiProperty({
         description: "ID of the main category to which the product belongs",

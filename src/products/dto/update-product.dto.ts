@@ -61,12 +61,12 @@ export class UpdateProductDto {
     colorId: string;
 
     @ApiPropertyOptional({
-        description: "Discount percentage for the product, if any",
+        description: "Price of the product with discount, if any",
         nullable: true,
     })
     @IsOptional()
     @IsNumber({ allowInfinity: false, allowNaN: false }, { each: false })
-    discountPercentage?: number;
+    priceWithDiscount?: number;
 
     @ApiPropertyOptional({ description: "Product information of the product" })
     @IsOptional()

@@ -56,10 +56,10 @@ export class ProductDto {
     color: ColorDto;
 
     @ApiProperty({
-        description: "Discount percentage for the product, if any",
+        description: "Price of the product with discount, if any",
         nullable: true,
     })
-    discountPercentage: number | null;
+    priceWithDiscount: number | null;
 
     @ApiProperty({
         description: "Category of the product",

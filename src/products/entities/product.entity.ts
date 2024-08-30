@@ -52,7 +52,7 @@ export class ProductEntity {
     color: ColorEntity;
 
     @Column({ type: "decimal", nullable: true })
-    discountPercentage?: number;
+    priceWithDiscount?: number;
 
     @ManyToOne(() => CategoryEntity, (category) => category.products)
     mainCategory: CategoryEntity;
