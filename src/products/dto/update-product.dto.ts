@@ -61,12 +61,20 @@ export class UpdateProductDto {
     colorId: string;
 
     @ApiPropertyOptional({
-        description: "Price of the product with discount, if any",
+        description: "Price of the product with discount in UAH, if any",
         nullable: true,
     })
     @IsOptional()
     @IsNumber({ allowInfinity: false, allowNaN: false }, { each: false })
-    priceWithDiscount?: number;
+    priceWithDiscountUah?: number;
+
+    @ApiPropertyOptional({
+        description: "Price of the product with discount in EUR, if any",
+        nullable: true,
+    })
+    @IsOptional()
+    @IsNumber({ allowInfinity: false, allowNaN: false }, { each: false })
+    priceWithDiscountEur?: number;
 
     @ApiPropertyOptional({ description: "Product information of the product" })
     @IsOptional()

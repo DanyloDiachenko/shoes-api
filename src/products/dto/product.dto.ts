@@ -56,10 +56,16 @@ export class ProductDto {
     color: ColorDto;
 
     @ApiProperty({
-        description: "Price of the product with discount, if any",
+        description: "Price of the product with discount in UAH, if any",
         nullable: true,
     })
-    priceWithDiscount: number | null;
+    priceWithDiscountUah: number | null;
+
+    @ApiProperty({
+        description: "Price of the product with discount in EUR, if any",
+        nullable: true,
+    })
+    priceWithDiscountEur: number | null;
 
     @ApiProperty({
         description: "Category of the product",
