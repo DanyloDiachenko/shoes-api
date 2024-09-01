@@ -10,6 +10,7 @@ import { ReviewEntity } from "src/reviews/entity/review.entity";
 import { ColorEntity } from "src/colors/entity/color.entity";
 import { ProductWithRatingDto } from "./dto/productWithRaiting.dto";
 import { SizeEntity } from "src/sizes/entity/size.entity";
+import { In } from "typeorm";
 
 @Injectable()
 export class ProductsService {
@@ -146,41 +147,49 @@ export class ProductsService {
         return { ...product, rating };
     }
 
-    async findAll(page: number = 1, limit: number = 5) {
-        const whereConditions = [];
+    async findAll(
+        page: number = 1,
+        limit: number = 6,
+        categories: string[] = [],
+    ) {
+        const queryBuilder = this.productsRepository
+            .createQueryBuilder("product")
+            .leftJoinAndSelect("product.mainCategory", "mainCategory")
+            .leftJoinAndSelect("product.brand", "brand")
+            .leftJoinAndSelect("product.reviews", "reviews")
+            .leftJoinAndSelect("product.color", "color")
+            .leftJoinAndSelect("product.sizes", "sizes")
+            .leftJoinAndSelect("product.categories", "categories");
 
-        const [result, total] = await this.productsRepository.findAndCount({
-            where: whereConditions.length > 0 ? whereConditions : {},
-            relations: [
-                "mainCategory",
-                "brand",
-                "reviews",
-                "color",
-                "sizes",
-                "categories",
-            ],
-            skip: (page - 1) * limit,
-            take: limit,
-        });
+        if (categories.length > 0) {
+            queryBuilder
+                .leftJoin("product.categories", "filterCategories")
+                .andWhere("filterCategories.slug IN (:...categories)", {
+                    categories,
+                })
+                .groupBy(
+                    "product.id, mainCategory.id, brand.id, color.id, categories.id, sizes.id, reviews.id",
+                ) // Добавляем все необходимые поля в GROUP BY
+                .having(
+                    "COUNT(DISTINCT filterCategories.id) = :categoryCount",
+                    { categoryCount: categories.length },
+                );
+        }
 
-        const resultWithRating = result.map((product) => {
-            const allMarks = product.reviews.reduce(
-                (acc, review) => acc + review.rating,
-                0,
-            );
-            const rating = Math.round(allMarks / product.reviews.length);
+        queryBuilder.skip((page - 1) * limit).take(limit);
 
-            return { ...product, rating };
-        });
+        const [result, total] = await queryBuilder.getManyAndCount();
 
         const totalPages = Math.ceil(total / limit);
-        const activeCount = result.length;
-        const remainingPages = totalPages - page;
+        const count = result.length;
 
         return {
-            data: resultWithRating,
-            activeCount: activeCount,
-            remainingPages: remainingPages,
+            data: result,
+            total,
+            totalPages,
+            count,
+            page,
+            limit,
         };
     }
 

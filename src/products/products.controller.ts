@@ -31,14 +31,9 @@ export class ProductsController {
     @Get()
     @ApiOperation({ summary: "Get all products" })
     @ApiQuery({
-        name: "category",
+        name: "categories",
         required: false,
-        description: "Filter products by category ID",
-    })
-    @ApiQuery({
-        name: "brand",
-        required: false,
-        description: "Filter products by brand ID",
+        description: "Filter products by category slugs",
     })
     @ApiQuery({
         name: "page",
@@ -46,22 +41,25 @@ export class ProductsController {
         description: "Page number",
         example: 1,
     })
-    @ApiQuery({
-        name: "limit",
-        required: false,
-        description: "Number of items per page",
-        example: 5,
-    })
     @ApiResponse({
         status: 200,
         description: "Return all products",
         type: [ProductWithRatingDto],
     })
     async findAll(
-        @Query("page") page: number = 1,
-        @Query("limit") limit: number = 5,
+        @Query("page") page: string = "1",
+        @Query("limit") limit: string = "6",
+        @Query("categories") categories: string = "",
     ) {
-        return this.productsService.findAll(page, limit);
+        const pageNumber = parseInt(page, 10) || 1;
+        const limitNumber = parseInt(limit, 10) || 6;
+        const categoryArray = categories ? categories.split(",") : [];
+
+        return this.productsService.findAll(
+            pageNumber,
+            limitNumber,
+            categoryArray,
+        );
     }
 
     @Get(":id")

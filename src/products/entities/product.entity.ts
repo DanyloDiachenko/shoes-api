@@ -1,17 +1,9 @@
-import {
-    Entity,
-    Column,
-    PrimaryGeneratedColumn,
-    ManyToOne,
-    OneToMany,
-    ManyToMany,
-    JoinTable,
-} from "typeorm";
-import { CategoryEntity } from "src/categories/entities/category.entity";
 import { BrandEntity } from "src/brands/entities/brand.entity";
-import { ReviewEntity } from "src/reviews/entity/review.entity";
+import { CategoryEntity } from "src/categories/entities/category.entity";
 import { ColorEntity } from "src/colors/entity/color.entity";
+import { ReviewEntity } from "src/reviews/entity/review.entity";
 import { SizeEntity } from "src/sizes/entity/size.entity";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("products")
 export class ProductEntity {

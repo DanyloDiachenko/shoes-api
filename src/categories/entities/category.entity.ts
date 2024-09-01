@@ -2,6 +2,7 @@ import { ProductEntity } from "src/products/entities/product.entity";
 import {
     Column,
     Entity,
+    ManyToMany,
     OneToMany,
     PrimaryGeneratedColumn,
     Unique,
@@ -22,6 +23,6 @@ export class CategoryEntity {
     @OneToMany(() => ProductEntity, (product) => product.mainCategory)
     products: ProductEntity[];
 
-    @OneToMany(() => ProductEntity, (product) => product.categories)
+    @ManyToMany(() => ProductEntity, (product) => product.categories)
     additionalProducts: ProductEntity[];
 }
