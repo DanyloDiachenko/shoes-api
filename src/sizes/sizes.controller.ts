@@ -1,8 +1,15 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
 import { SizesService } from "./sizes.service";
 import { CreateSizeDto } from "./dto/create-size.dto";
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import {
+    ApiBody,
+    ApiOperation,
+    ApiParam,
+    ApiResponse,
+    ApiTags,
+} from "@nestjs/swagger";
 import { SizeDto } from "./dto/size.dto";
+import { FindOneParamsDto } from "src/helpers/find-one-params.dto";
 
 @ApiTags("sizes")
 @Controller("sizes")
@@ -31,5 +38,18 @@ export class SizesController {
     })
     async findAll() {
         return await this.sizesService.findAll();
+    }
+
+    @Delete(":id")
+    @ApiOperation({ summary: "Delete a size by ID" })
+    @ApiParam({ name: "id", description: "ID of the size to delete" })
+    @ApiResponse({
+        status: 200,
+        description: "Size deleted successfully",
+        example: { success: true },
+    })
+    @ApiResponse({ status: 404, description: "Size not found" })
+    async delete(@Param() params: FindOneParamsDto) {
+        return await this.sizesService.delete(params.id);
     }
 }

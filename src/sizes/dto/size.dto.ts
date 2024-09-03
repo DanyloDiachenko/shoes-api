@@ -9,10 +9,10 @@ export class SizeDto {
     @ApiProperty({
         description: "Title of the size",
     })
-    title: string;
+    title: number;
 
     @ApiProperty({
         description: "Slug of the size",
     })
-    slug: string;
+    slug: number;
 }

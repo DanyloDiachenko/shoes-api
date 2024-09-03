@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { SizeEntity } from "./entity/size.entity";
@@ -23,5 +23,21 @@ export class SizesService {
         const sizes = await this.sizesRepository.find();
 
         return sizes;
+    }
+
+    async delete(id: string) {
+        const sizeToDelete = await this.sizesRepository.findOne({
+            where: {
+                id: id,
+            },
+        });
+
+        if (!sizeToDelete) {
+            throw new NotFoundException(`Size with ID ${id} not found`);
+        }
+
+        await this.sizesRepository.delete({ id: id });
+
+        return { success: true };
     }
 }

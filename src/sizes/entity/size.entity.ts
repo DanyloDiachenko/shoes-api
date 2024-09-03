@@ -7,10 +7,10 @@ export class SizeEntity {
     id: string;
 
     @Column()
-    title: string;
+    title: number;
 
     @Column({ unique: true })
-    slug: string;
+    slug: number;
 
     @ManyToOne(() => ProductEntity, (product) => product.sizes)
     product: ProductEntity;

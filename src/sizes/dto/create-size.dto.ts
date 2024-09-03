@@ -1,12 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString } from "class-validator";
+import { IsNumber } from "class-validator";
 
 export class CreateSizeDto {
     @ApiProperty({ description: "Title of the size" })
-    @IsString()
-    title: string;
+    @IsNumber()
+    title: number;
 
     @ApiProperty({ description: "Slug of the size" })
-    @IsString()
-    slug: string;
+    @IsNumber()
+    slug: number;
 }
