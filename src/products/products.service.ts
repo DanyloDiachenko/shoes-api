@@ -151,6 +151,9 @@ export class ProductsService {
         page: number = 1,
         limit: number = 6,
         categories: string[] = [],
+        sizes: string[] = [],
+        colour: string = "",
+        brands: string[] = [],
     ) {
         const queryBuilder = this.productsRepository
             .createQueryBuilder("product")
@@ -169,11 +172,25 @@ export class ProductsService {
                 })
                 .groupBy(
                     "product.id, mainCategory.id, brand.id, color.id, categories.id, sizes.id, reviews.id",
-                ) // Добавляем все необходимые поля в GROUP BY
+                )
                 .having(
                     "COUNT(DISTINCT filterCategories.id) = :categoryCount",
                     { categoryCount: categories.length },
                 );
+        }
+
+        if (sizes.length > 0) {
+            queryBuilder
+                .leftJoin("product.sizes", "filterSizes")
+                .andWhere("filterSizes.slug IN (:...sizes)", { sizes });
+        }
+
+        if (colour) {
+            queryBuilder.andWhere("color.slug = :colour", { colour });
+        }
+
+        if (brands.length > 0) {
+            queryBuilder.andWhere("brand.slug IN (:...brands)", { brands });
         }
 
         queryBuilder.skip((page - 1) * limit).take(limit);

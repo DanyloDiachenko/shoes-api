@@ -50,10 +50,15 @@ export class ProductsController {
         @Query("page") page: string = "1",
         @Query("limit") limit: string = "6",
         @Query("categories") categories: string = "",
+        @Query("sizes") sizes: string = "",
+        @Query("color") color: string = "",
+        @Query("brands") brands: string = "",
     ) {
         const pageNumber = parseInt(page, 10) || 1;
         const limitNumber = parseInt(limit, 10) || 6;
         const categoryArray = categories ? categories.split(",") : [];
+        const sizeArray = sizes ? sizes.split(",") : [];
+        const brandArray = brands ? brands.split(",") : [];
 
         return this.productsService.findAll(
             pageNumber,
