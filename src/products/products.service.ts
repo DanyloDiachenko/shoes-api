@@ -150,57 +150,78 @@ export class ProductsService {
     async findAll(
         page: number = 1,
         limit: number = 6,
+        sortBy: "mostPopular" | "mostRated" | "date" = "mostPopular",
         categories: string[] = [],
         sizes: string[] = [],
         color: string = "",
         brands: string[] = [],
     ) {
-        const queryBuilder = this.productsRepository
-            .createQueryBuilder("product")
+        const query = this.productsRepository.createQueryBuilder("product");
+
+        query
             .leftJoinAndSelect("product.mainCategory", "mainCategory")
-            .leftJoinAndSelect("product.brand", "brand")
-            .leftJoinAndSelect("product.reviews", "reviews")
+            .leftJoinAndSelect("product.categories", "categories")
             .leftJoinAndSelect("product.color", "color")
+            .leftJoinAndSelect("product.brand", "brand")
             .leftJoinAndSelect("product.sizes", "sizes")
-            .leftJoinAndSelect("product.categories", "categories");
+            .leftJoinAndSelect("product.reviews", "reviews");
 
         if (categories.length > 0) {
-            queryBuilder
-                .leftJoin("product.categories", "filterCategories")
-                .andWhere("filterCategories.slug IN (:...categories)", {
-                    categories,
-                });
+            query.andWhere("product.mainCategory IN (:...categories)", {
+                categories,
+            });
         }
 
         if (sizes.length > 0) {
-            queryBuilder
-                .leftJoin("product.sizes", "filterSizes")
-                .andWhere("filterSizes.slug IN (:...sizes)", { sizes });
+            query.andWhere("sizes.slug IN (:...sizes)", { sizes });
         }
 
         if (color) {
-            queryBuilder.andWhere("color.slug = :color", { color });
+            query.andWhere("color.slug = :color", { color });
         }
 
         if (brands.length > 0) {
-            queryBuilder.andWhere("brand.slug IN (:...brands)", { brands });
+            query.andWhere("brand.slug IN (:...brands)", { brands });
         }
 
-        queryBuilder.skip((page - 1) * limit).take(limit);
+        switch (sortBy) {
+            case "mostPopular":
+                query.orderBy("product.purchasedNumber", "DESC");
+                break;
+            case "date":
+                query.orderBy("product.createdAt", "DESC");
+                break;
+        }
 
-        const [result, total] = await queryBuilder.getManyAndCount();
+        query.skip((page - 1) * limit).take(limit);
 
-        const totalPages = Math.ceil(total / limit);
-        const count = result.length;
+        const [products, total] = await query.getManyAndCount();
 
-        return {
-            data: result,
+        const productsWithRating = products.map((product) => {
+            const totalReviews = product.reviews.length;
+            const averageRating =
+                totalReviews > 0
+                    ? product.reviews.reduce(
+                          (acc, review) => acc + review.rating,
+                          0,
+                      ) / totalReviews
+                    : null;
+            return {
+                ...product,
+                averageRating,
+            };
+        });
+
+        const response = {
+            data: productsWithRating,
             total,
-            totalPages,
-            count,
+            totalPages: Math.ceil(total / limit),
+            count: productsWithRating.length,
             page,
             limit,
         };
+
+        return response;
     }
 
     async update(id: string, updateProductDto: UpdateProductDto) {

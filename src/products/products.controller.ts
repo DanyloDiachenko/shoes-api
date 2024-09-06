@@ -49,6 +49,7 @@ export class ProductsController {
     async findAll(
         @Query("page") page: string = "1",
         @Query("limit") limit: string = "6",
+        @Query("sortBy") sortBy: "mostPopular" | "mostRated" | "date",
         @Query("categories") categories: string = "",
         @Query("sizes") sizes: string = "",
         @Query("color") color: string = "",
@@ -63,6 +64,7 @@ export class ProductsController {
         return this.productsService.findAll(
             pageNumber,
             limitNumber,
+            sortBy,
             categoryArray,
             sizeArray,
             color,

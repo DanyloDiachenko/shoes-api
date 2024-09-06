@@ -11,6 +11,9 @@ export class ProductDto {
     })
     id: string;
 
+    @ApiProperty({ description: "Timestamp when the order was created" })
+    createdAt: Date;
+
     @ApiProperty({
         description: "Title of the product",
     })

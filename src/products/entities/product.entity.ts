@@ -10,6 +10,9 @@ export class ProductEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
+    @Column("timestamp", { default: () => "CURRENT_TIMESTAMP" })
+    createdAt: Date;
+
     @Column()
     title: string;
 
