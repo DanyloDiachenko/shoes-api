@@ -152,7 +152,7 @@ export class ProductsService {
         limit: number = 6,
         categories: string[] = [],
         sizes: string[] = [],
-        colour: string = "",
+        color: string = "",
         brands: string[] = [],
     ) {
         const queryBuilder = this.productsRepository
@@ -169,14 +169,7 @@ export class ProductsService {
                 .leftJoin("product.categories", "filterCategories")
                 .andWhere("filterCategories.slug IN (:...categories)", {
                     categories,
-                })
-                .groupBy(
-                    "product.id, mainCategory.id, brand.id, color.id, categories.id, sizes.id, reviews.id",
-                )
-                .having(
-                    "COUNT(DISTINCT filterCategories.id) = :categoryCount",
-                    { categoryCount: categories.length },
-                );
+                });
         }
 
         if (sizes.length > 0) {
@@ -185,8 +178,8 @@ export class ProductsService {
                 .andWhere("filterSizes.slug IN (:...sizes)", { sizes });
         }
 
-        if (colour) {
-            queryBuilder.andWhere("color.slug = :colour", { colour });
+        if (color) {
+            queryBuilder.andWhere("color.slug = :color", { color });
         }
 
         if (brands.length > 0) {

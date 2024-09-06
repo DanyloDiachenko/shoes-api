@@ -64,6 +64,9 @@ export class ProductsController {
             pageNumber,
             limitNumber,
             categoryArray,
+            sizeArray,
+            color,
+            brandArray,
         );
     }
 
