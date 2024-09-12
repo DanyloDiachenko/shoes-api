@@ -167,9 +167,19 @@ export class ProductsService {
             .leftJoinAndSelect("product.reviews", "reviews");
 
         if (categories.length > 0) {
-            query.andWhere("product.mainCategory IN (:...categories)", {
-                categories,
-            });
+            query.andWhere(
+                (qb) =>
+                    "product.id IN " +
+                    qb
+                        .subQuery()
+                        .select("productSub.id")
+                        .from(ProductEntity, "productSub")
+                        .leftJoin("productSub.categories", "category")
+                        .where("category.slug IN (:...categories)", {
+                            categories,
+                        })
+                        .getQuery(),
+            );
         }
 
         if (sizes.length > 0) {
