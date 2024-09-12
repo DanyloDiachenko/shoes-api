@@ -155,7 +155,12 @@ export class ProductsService {
         sizes: string[] = [],
         color: string = "",
         brands: string[] = [],
+        currency: "uah" | "eur",
+        priceFrom: number = 0,
+        priceTo: number = 100000,
     ) {
+        console.log(priceFrom ? priceFrom : 0);
+
         const query = this.productsRepository.createQueryBuilder("product");
 
         query
@@ -192,6 +197,24 @@ export class ProductsService {
 
         if (brands.length > 0) {
             query.andWhere("brand.slug IN (:...brands)", { brands });
+        }
+
+        if (currency === "uah") {
+            query.andWhere(
+                `(COALESCE(product.priceWithDiscountUah, product.priceUah) BETWEEN :priceFrom AND :priceTo)`,
+                {
+                    priceFrom: priceFrom,
+                    priceTo: priceTo,
+                },
+            );
+        } else if (currency === "eur") {
+            query.andWhere(
+                `(COALESCE(product.priceWithDiscountEur, product.priceEur) BETWEEN :priceFrom AND :priceTo)`,
+                {
+                    priceFrom: priceFrom,
+                    priceTo: priceTo,
+                },
+            );
         }
 
         switch (sortBy) {
