@@ -159,8 +159,6 @@ export class ProductsService {
         priceFrom: number = 0,
         priceTo: number = 100000,
     ) {
-        console.log(priceFrom ? priceFrom : 0);
-
         const query = this.productsRepository.createQueryBuilder("product");
 
         query
