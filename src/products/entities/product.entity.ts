@@ -3,7 +3,15 @@ import { CategoryEntity } from "src/categories/entities/category.entity";
 import { ColorEntity } from "src/colors/entity/color.entity";
 import { ReviewEntity } from "src/reviews/entity/review.entity";
 import { SizeEntity } from "src/sizes/entity/size.entity";
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {
+    Column,
+    Entity,
+    JoinTable,
+    ManyToMany,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from "typeorm";
 
 @Entity("products")
 export class ProductEntity {
@@ -22,10 +30,20 @@ export class ProductEntity {
     @Column("int")
     quantityInStock: number;
 
-    @Column("decimal")
+    @Column("decimal", {
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => parseFloat(value),
+        },
+    })
     priceUah: number;
 
-    @Column("decimal")
+    @Column("decimal", {
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => parseFloat(value),
+        },
+    })
     priceEur: number;
 
     @Column()
@@ -46,10 +64,22 @@ export class ProductEntity {
     @ManyToOne(() => ColorEntity, (color) => color.product)
     color: ColorEntity;
 
-    @Column({ type: "decimal", nullable: true })
+    @Column("decimal", {
+        nullable: true,
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => parseFloat(value),
+        },
+    })
     priceWithDiscountUah?: number;
 
-    @Column({ type: "decimal", nullable: true })
+    @Column("decimal", {
+        nullable: true,
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => parseFloat(value),
+        },
+    })
     priceWithDiscountEur?: number;
 
     @ManyToOne(() => CategoryEntity, (category) => category.products)
