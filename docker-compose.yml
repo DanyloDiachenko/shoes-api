@@ -1,0 +1,30 @@
+services:
+    postgres:
+        image: postgres:15
+        container_name: postgres_db
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: danil11122
+            POSTGRES_DB: shoes
+        ports:
+            - "5434:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+
+    nestjs_app:
+        build: .
+        container_name: nestjs_app
+        restart: always
+        environment:
+            DATABASE_HOST: localhost
+            DATABASE_PORT: 5432
+            DATABASE_USER: postgres
+            DATABASE_PASSWORD: danil11122
+            DATABASE_NAME: shoes
+        ports:
+            - "3001:3001"
+        depends_on:
+            - postgres
+
+volumes:
+    postgres_data:
