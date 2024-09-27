@@ -30,7 +30,7 @@ export class ProductDto {
     quantityInStock: number;
 
     @ApiProperty({ description: "Product information of the product" })
-    productInformtion: string;
+    productInformation: string;
 
     @ApiProperty({ description: "Additional information of the product" })
     additionalInformation: string;

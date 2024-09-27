@@ -44,7 +44,7 @@ export class CreateProductDto {
 
     @ApiProperty({ description: "Product information of the product" })
     @IsString()
-    productInformtion: string;
+    productInformation: string;
 
     @ApiProperty({ description: "Additional information of the product" })
     @IsString()

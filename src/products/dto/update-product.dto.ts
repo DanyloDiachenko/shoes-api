@@ -79,7 +79,7 @@ export class UpdateProductDto {
     @ApiPropertyOptional({ description: "Product information of the product" })
     @IsOptional()
     @IsString()
-    productInformtion?: string;
+    productInformation?: string;
 
     @ApiPropertyOptional({
         description: "Additional information of the product",

@@ -50,7 +50,7 @@ export class ProductEntity {
     mainImage: string;
 
     @Column()
-    productInformtion: string;
+    productInformation: string;
 
     @Column()
     additionalInformation: string;
