@@ -9,7 +9,7 @@ import { UserDto } from "./dto/user.dto";
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
-    @Post()
+    @Post("create")
     @ApiOperation({ summary: "Create a new user" })
     @ApiBody({ type: CreateUserDto })
     @ApiResponse({
