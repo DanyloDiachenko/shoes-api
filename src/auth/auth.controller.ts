@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { IUser } from "src/types/user.interface";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
@@ -33,8 +33,8 @@ export class AuthController {
         description: "User or password are incorrect / Unathorized",
     })
     @ApiResponse({ status: 400, description: "User not found" })
-    async login(@Request() req: { user: IUser }) {
-        return await this.authService.login(req.user);
+    async login(@Body() loginDto: LoginDto) {
+        return await this.authService.login(loginDto);
     }
 
     @Get("profile")
