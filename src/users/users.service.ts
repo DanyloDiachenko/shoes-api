@@ -34,8 +34,10 @@ export class UsersService {
             email: createUserDto.email,
         });
 
+        const { passwordHash, ...createdUserWithoutPassword } = createdUser;
+
         return {
-            createdUser,
+            createdUserWithoutPassword,
             token,
         };
     }
