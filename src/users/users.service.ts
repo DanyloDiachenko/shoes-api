@@ -37,7 +37,7 @@ export class UsersService {
         const { passwordHash, ...createdUserWithoutPassword } = createdUser;
 
         return {
-            createdUserWithoutPassword,
+            ...createdUserWithoutPassword,
             token,
         };
     }
