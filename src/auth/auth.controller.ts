@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Get,
+    Post,
+    Request,
+    UnauthorizedException,
+    UseGuards,
+} from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { IUser } from "src/types/user.interface";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
@@ -13,6 +21,7 @@ import {
 import { LoginDto } from "./dto/login.dto";
 import { LoginResponseDto } from "./dto/login-response.dto";
 import { ProfileResponseDto } from "./dto/profile-response.dto";
+import { GoogleLoginDto } from "./dto/google-login.dto";
 
 @ApiTags("auth")
 @Controller("auth")
@@ -49,5 +58,30 @@ export class AuthController {
     @ApiResponse({ status: 401, description: "Unauthorized" })
     async getProfile(@Request() req: { user: IUser }) {
         return req.user;
+    }
+
+    @Post("google-login")
+    @ApiOperation({ summary: "Google login" })
+    @ApiBody({ type: GoogleLoginDto })
+    @ApiResponse({
+        status: 201,
+        description: "Login successful",
+    })
+    @ApiResponse({
+        status: 401,
+        description: "Google token is invalid",
+    })
+    async googleLogin(@Body() googleLoginDto: GoogleLoginDto) {
+        const user = await this.authService.validateGoogleUser(
+            googleLoginDto.token,
+        );
+
+        if (!user) {
+            throw new UnauthorizedException(
+                "Invalid Google token on controller",
+            );
+        }
+
+        return this.authService.loginWithGoogle(user);
     }
 }

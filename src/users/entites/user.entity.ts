@@ -13,8 +13,8 @@ export class UserEntity {
     @Column()
     email: string;
 
-    @Column()
-    passwordHash: string;
+    @Column({ nullable: true })
+    passwordHash?: string;
 
     @OneToMany(() => FavoriteEntity, (favorite) => favorite.user)
     favorites: FavoriteEntity[];

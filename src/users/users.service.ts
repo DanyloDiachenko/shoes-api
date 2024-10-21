@@ -22,12 +22,14 @@ export class UsersService {
         });
 
         if (existingUser) {
-            throw new BadRequestException("This email already exist");
+            throw new BadRequestException("This email already exists");
         }
 
         const createdUser = await this.usersRepository.save({
             email: createUserDto.email,
-            passwordHash: await argon2.hash(createUserDto.password),
+            passwordHash: createUserDto.password
+                ? await argon2.hash(createUserDto.password)
+                : null,
         });
 
         const token = this.jwtService.sign({
