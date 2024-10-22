@@ -91,6 +91,7 @@ export class UsersService {
             where: {
                 email,
             },
+            relations: ["addresses", "favorites", "orders", "reviews"],
         });
     }
 }

@@ -22,6 +22,7 @@ import { LoginDto } from "./dto/login.dto";
 import { LoginResponseDto } from "./dto/login-response.dto";
 import { ProfileResponseDto } from "./dto/profile-response.dto";
 import { GoogleLoginDto } from "./dto/google-login.dto";
+import { FindOneParamsDto } from "src/helpers/find-one-params.dto";
 
 @ApiTags("auth")
 @Controller("auth")
@@ -56,8 +57,8 @@ export class AuthController {
         type: ProfileResponseDto,
     })
     @ApiResponse({ status: 401, description: "Unauthorized" })
-    async getProfile(@Request() req: { user: IUser }) {
-        return req.user;
+    async getProfile(@Request() req: any) {
+        return this.authService.getProfile(req.user.email);
     }
 
     @Post("google-login")
