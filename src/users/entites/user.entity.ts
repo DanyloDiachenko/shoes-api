@@ -14,6 +14,18 @@ export class UserEntity {
     email: string;
 
     @Column({ nullable: true })
+    firstName?: string;
+
+    @Column({ nullable: true })
+    lastName?: string;
+
+    @Column({ nullable: true })
+    displayName?: string;
+
+    @Column({ nullable: true })
+    phone?: string;
+
+    @Column({ nullable: true })
     passwordHash?: string;
 
     @OneToMany(() => FavoriteEntity, (favorite) => favorite.user)
