@@ -116,6 +116,10 @@ export class AuthService {
     }
 
     async getProfile(userEmail: string) {
-        return await this.usersService.findOne(userEmail);
+        const user = await this.usersService.findOne(userEmail);
+
+        const { passwordHash, ...userWithoutPassword } = user;
+
+        return { ...userWithoutPassword };
     }
 }
