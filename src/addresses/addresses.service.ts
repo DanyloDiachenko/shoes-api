@@ -15,61 +15,93 @@ export class AddressesService {
         private readonly userRepository: Repository<UserEntity>,
     ) {}
 
-    async create(createAddressDto: CreateAddressDto, userId: string) {
-        const address = this.addressesRepository.create({
-            ...createAddressDto,
-            user: { id: userId },
-        });
-
-        await this.addressesRepository.save(address);
-
-        return { ...address, user: undefined };
-    }
-
-    async getAllByUser(userId: string) {
-        const userExists = await this.userRepository.findOne({
+    async createBillingAddress(
+        createAddressDto: CreateAddressDto,
+        userId: string,
+    ) {
+        const user = await this.userRepository.findOne({
             where: { id: userId },
+            relations: ["billingAddress"],
         });
-
-        if (!userExists) {
+        console.log("us", user);
+        if (!user) {
             throw new NotFoundException(`User with ID ${userId} not found`);
         }
 
-        return await this.addressesRepository.find({
-            where: { user: { id: userId } },
-        });
+        const address = this.addressesRepository.create(createAddressDto);
+        await this.addressesRepository.save(address);
+
+        user.billingAddress = address;
+        await this.userRepository.save(user);
+
+        return address;
     }
 
-    async delete(id: string) {
-        const addressToDelete = await this.addressesRepository.findOne({
-            where: { id },
+    async createShippingAddress(
+        createAddressDto: CreateAddressDto,
+        userId: string,
+    ) {
+        console.log(userId);
+        const user = await this.userRepository.findOne({
+            where: { id: userId },
+            relations: ["shippingAddress"],
         });
-
-        if (!addressToDelete) {
-            throw new NotFoundException(`Address with ID ${id} not found`);
+        if (!user) {
+            throw new NotFoundException(`User with ID ${userId} not found`);
         }
 
-        await this.addressesRepository.delete({ id: id });
+        const address = this.addressesRepository.create(createAddressDto);
+        await this.addressesRepository.save(address);
 
-        return {
-            success: true,
-        };
+        user.shippingAddress = address;
+        await this.userRepository.save(user);
+
+        return address;
     }
 
-    async update(id: string, updateAddressDto: UpdateAddressDto) {
-        const isExistingAddress = await this.addressesRepository.findOne({
-            where: { id },
+    async updateBillingAddress(
+        updateAddressDto: UpdateAddressDto,
+        userId: string,
+    ) {
+        const user = await this.userRepository.findOne({
+            where: { id: userId },
+            relations: ["billingAddress"],
         });
-
-        if (!isExistingAddress) {
-            throw new NotFoundException(`Address with ID ${id} not found`);
+        if (!user || !user.billingAddress) {
+            throw new NotFoundException(
+                `Billing address not found for user with ID ${userId}`,
+            );
         }
 
-        const updatedAddress = await this.addressesRepository.merge(
-            isExistingAddress,
+        const updatedAddress = this.addressesRepository.merge(
+            user.billingAddress,
             updateAddressDto,
         );
+        await this.addressesRepository.save(updatedAddress);
 
-        return this.addressesRepository.save(updatedAddress);
+        return updatedAddress;
+    }
+
+    async updateShippingAddress(
+        updateAddressDto: UpdateAddressDto,
+        userId: string,
+    ) {
+        const user = await this.userRepository.findOne({
+            where: { id: userId },
+            relations: ["shippingAddress"],
+        });
+        if (!user || !user.shippingAddress) {
+            throw new NotFoundException(
+                `Shipping address not found for user with ID ${userId}`,
+            );
+        }
+
+        const updatedAddress = this.addressesRepository.merge(
+            user.shippingAddress,
+            updateAddressDto,
+        );
+        await this.addressesRepository.save(updatedAddress);
+
+        return updatedAddress;
     }
 }

@@ -2,15 +2,10 @@ import { IsOptional, IsString, IsInt } from "class-validator";
 import { ApiPropertyOptional } from "@nestjs/swagger";
 
 export class UpdateAddressDto {
-    @ApiPropertyOptional({ description: "Name of the receiver" })
+    @ApiPropertyOptional({ description: "Street of the address" })
     @IsString()
     @IsOptional()
-    receiver?: string;
-
-    @ApiPropertyOptional({ description: "Phone number of the receiver" })
-    @IsString()
-    @IsOptional()
-    phone?: string;
+    street?: string;
 
     @ApiPropertyOptional({ description: "Country of the address" })
     @IsString()
@@ -28,7 +23,7 @@ export class UpdateAddressDto {
     homeNumber?: string;
 
     @ApiPropertyOptional({ description: "Postal index of the address" })
-    @IsInt()
+    @IsString()
     @IsOptional()
-    postIndex?: number;
+    postIndex?: string;
 }

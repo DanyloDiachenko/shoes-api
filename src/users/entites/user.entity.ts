@@ -3,7 +3,13 @@ import { AddressEntity } from "src/addresses/entities/address.entity";
 import { FavoriteEntity } from "src/favorites/entities/favorite.entity";
 import { OrderEntity } from "src/orders/entities/order.entity";
 import { ReviewEntity } from "src/reviews/entity/review.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {
+    Column,
+    Entity,
+    OneToMany,
+    OneToOne,
+    PrimaryGeneratedColumn,
+} from "typeorm";
 
 @Entity("users")
 export class UserEntity {
@@ -31,8 +37,15 @@ export class UserEntity {
     @OneToMany(() => FavoriteEntity, (favorite) => favorite.user)
     favorites: FavoriteEntity[];
 
-    @OneToMany(() => AddressEntity, (address) => address.user)
-    addresses: AddressEntity[];
+    @OneToOne(() => AddressEntity, (address) => address.billingUser, {
+        cascade: true,
+    })
+    billingAddress: AddressEntity;
+
+    @OneToOne(() => AddressEntity, (address) => address.shippingUser, {
+        cascade: true,
+    })
+    shippingAddress: AddressEntity;
 
     @OneToMany(() => OrderEntity, (order) => order.user)
     orders: OrderEntity[];

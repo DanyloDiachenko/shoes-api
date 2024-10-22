@@ -1,18 +1,6 @@
-import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    Param,
-    Post,
-    Put,
-    Req,
-    UseGuards,
-    ValidationPipe,
-} from "@nestjs/common";
+import { Body, Controller, Post, Put, Req, UseGuards } from "@nestjs/common";
 import { CreateAddressDto } from "./dto/create-address.dto";
 import { AddressesService } from "./addresses.service";
-import { FindOneParamsDto } from "src/helpers/find-one-params.dto";
 import { UpdateAddressDto } from "./dto/update-address.dto";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import {
@@ -28,73 +16,93 @@ import { AddressDto } from "./dto/address.dto";
 export class AddressesController {
     constructor(private readonly addressesService: AddressesService) {}
 
-    @Post()
+    @Post("billing")
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth()
-    @ApiOperation({ summary: "Create an address" })
+    @ApiOperation({ summary: "Create billing address" })
     @ApiResponse({
         status: 201,
-        description: "The address has been successfully created.",
-        example: AddressDto,
+        description: "The billing address has been successfully created.",
         type: AddressDto,
     })
-    @ApiResponse({ status: 401, description: "Unauthorized." })
+    @ApiResponse({ status: 401, description: "Unauthorized" })
     @ApiResponse({ status: 400, description: "Bad Request" })
-    async create(@Body() createAddressDto: CreateAddressDto, @Req() req: any) {
-        return await this.addressesService.create(
+    async createBillingAddress(
+        @Body() createAddressDto: CreateAddressDto,
+        @Req() req: any,
+    ) {
+        return await this.addressesService.createBillingAddress(
             createAddressDto,
             req.user.id,
         );
     }
 
-    @Get()
+    @Post("shipping")
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth()
-    @ApiOperation({ summary: "Get all addresses for the user" })
+    @ApiOperation({ summary: "Create shipping address" })
     @ApiResponse({
         status: 201,
-        description: "Return all addresses for the user.",
-        type: [AddressDto],
-        example: AddressDto,
-    })
-    @ApiResponse({ status: 401, description: "Unauthorized." })
-    @ApiResponse({
-        status: 404,
-        description: "User with ID ... not found.",
-    })
-    async getAllByUser(@Req() req: any) {
-        return await this.addressesService.getAllByUser(req.user.id);
-    }
-
-    @Delete(":id")
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth()
-    @ApiOperation({ summary: "Delete an address by ID" })
-    @ApiResponse({
-        status: 200,
-        description: "The address has been successfully deleted.",
-        example: { success: true },
-    })
-    @ApiResponse({ status: 404, description: "Address not found." })
-    async delete(@Param() params: FindOneParamsDto) {
-        return await this.addressesService.delete(params.id);
-    }
-
-    @Put(":id")
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth()
-    @ApiOperation({ summary: "Update an address by ID" })
-    @ApiResponse({
-        status: 200,
-        description: "The address has been successfully updated.",
-        example: AddressDto,
+        description: "The shipping address has been successfully created.",
         type: AddressDto,
     })
-    @ApiResponse({ status: 404, description: "Address not found." })
-    async update(
-        @Param() params: FindOneParamsDto,
-        @Body() updateAddressDto: UpdateAddressDto,
+    @ApiResponse({ status: 401, description: "Unauthorized" })
+    @ApiResponse({ status: 400, description: "Bad Request" })
+    async createShippingAddress(
+        @Body() createAddressDto: CreateAddressDto,
+        @Req() req: any,
     ) {
-        return await this.addressesService.update(params.id, updateAddressDto);
+        return await this.addressesService.createShippingAddress(
+            createAddressDto,
+            req.user.id,
+        );
+    }
+
+    @Put("billing")
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
+    @ApiOperation({ summary: "Update billing address" })
+    @ApiResponse({
+        status: 200,
+        description: "The billing address has been successfully updated.",
+        type: AddressDto,
+    })
+    @ApiResponse({ status: 401, description: "Unauthorized" })
+    @ApiResponse({
+        status: 404,
+        description: "Billing address not found for user.",
+    })
+    async updateBillingAddress(
+        @Body() updateAddressDto: UpdateAddressDto,
+        @Req() req: any,
+    ) {
+        return await this.addressesService.updateBillingAddress(
+            updateAddressDto,
+            req.user.id,
+        );
+    }
+
+    @Put("shipping")
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
+    @ApiOperation({ summary: "Update shipping address" })
+    @ApiResponse({
+        status: 200,
+        description: "The shipping address has been successfully updated.",
+        type: AddressDto,
+    })
+    @ApiResponse({ status: 401, description: "Unauthorized" })
+    @ApiResponse({
+        status: 404,
+        description: "Shipping address not found for user.",
+    })
+    async updateShippingAddress(
+        @Body() updateAddressDto: UpdateAddressDto,
+        @Req() req: any,
+    ) {
+        return await this.addressesService.updateShippingAddress(
+            updateAddressDto,
+            req.user.id,
+        );
     }
 }

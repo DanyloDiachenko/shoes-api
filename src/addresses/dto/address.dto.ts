@@ -4,11 +4,8 @@ export class AddressDto {
     @ApiProperty({ description: "ID of the address" })
     id: string;
 
-    @ApiProperty({ description: "Name of the receiver" })
-    receiver: string;
-
-    @ApiProperty({ description: "Phone number of the receiver" })
-    phone: string;
+    @ApiProperty({ description: "Street of the address" })
+    street: string;
 
     @ApiProperty({ description: "Country of the address" })
     country: string;
