@@ -11,13 +11,13 @@ export class UpdateUserDto {
     @IsString()
     @IsOptional()
     @MinLength(6, { message: "New password must be more than 6 symbols" })
-    passwordNew?: string;
+    newPassword?: string;
 
     @ApiPropertyOptional({ description: "Previous user's password", minLength: 6 })
     @IsString()
     @IsOptional()
     @MinLength(6, { message: "Previous password must be more than 6 symbols" })
-    passwordPrev?: string;
+    currentPassword?: string;
 
     @ApiPropertyOptional({ description: "First name of the user" })
     @IsString()

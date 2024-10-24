@@ -39,7 +39,6 @@ export class UsersService {
 
         const token = this.jwtService.sign({
             email: createUserDto.email,
-            
         });
 
         const { passwordHash, ...createdUserWithoutPassword } = createdUser;
@@ -59,17 +58,21 @@ export class UsersService {
             throw new NotFoundException(`User with ID ${userId} not found`);
         }
 
-        if (updateUserDto.passwordNew) {
+        if (updateUserDto.newPassword) {
+            if (!updateUserDto.currentPassword) {
+                throw new BadRequestException("Current password is required");
+            }
+
             const isPasswordsMatched = await argon2.verify(
                 userToUpdate.passwordHash,
-                updateUserDto.passwordPrev,
+                updateUserDto.currentPassword,
             );
 
             if (!isPasswordsMatched) {
                 throw new BadRequestException("Previous password is incorrect");
             }
             userToUpdate.passwordHash = await argon2.hash(
-                updateUserDto.passwordNew,
+                updateUserDto.newPassword,
             );
         }
 
@@ -92,7 +95,13 @@ export class UsersService {
             where: {
                 email,
             },
-            relations: ["shippingAddress", "billingAddress", "favorites", "orders", "reviews"],
+            relations: [
+                "shippingAddress",
+                "billingAddress",
+                "favorites",
+                "orders",
+                "reviews",
+            ],
         });
     }
 }
