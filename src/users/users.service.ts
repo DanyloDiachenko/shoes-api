@@ -39,6 +39,7 @@ export class UsersService {
 
         const token = this.jwtService.sign({
             email: createUserDto.email,
+            
         });
 
         const { passwordHash, ...createdUserWithoutPassword } = createdUser;

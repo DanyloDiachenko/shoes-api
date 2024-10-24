@@ -69,10 +69,19 @@ export class AuthService {
             throw new UnauthorizedException("Password is incorrect");
         }
 
+        const expiresIn = this.configService.get(
+            loginDto
+                ? "TOKEN_EXPIRES_IN_REMEMBER_ME"
+                : "TOKEN_EXPIRES_IN_NOT_REMEMBER_ME",
+        );
+
         return {
             id: findedUser.id,
             email: findedUser.email,
-            token: this.jwtService.sign({ id: findedUser.id, email }),
+            token: this.jwtService.sign(
+                { id: findedUser.id, email },
+                { expiresIn },
+            ),
         };
     }
 
