@@ -41,7 +41,6 @@ export class AddressesService {
         createAddressDto: CreateAddressDto,
         userId: string,
     ) {
-        console.log(userId);
         const user = await this.userRepository.findOne({
             where: { id: userId },
             relations: ["shippingAddress"],
