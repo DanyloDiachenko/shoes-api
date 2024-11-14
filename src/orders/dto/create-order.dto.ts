@@ -1,4 +1,4 @@
-import { IsArray, IsUUID } from "class-validator";
+import { IsArray, IsOptional, IsString, IsUUID } from "class-validator";
 
 export class CreateOrderDto {
     @IsArray()
@@ -6,4 +6,8 @@ export class CreateOrderDto {
 
     @IsUUID()
     deliveryAddressId: string;
+
+    @IsString()
+    @IsOptional()
+    orderNotes?: string;
 }
