@@ -25,4 +25,7 @@ export class OrderEntity {
 
     @Column("timestamp", { default: () => "CURRENT_TIMESTAMP" })
     createdAt: Date;
+
+    @Column("text", { nullable: true })
+    orderNotes?: string;
 }
