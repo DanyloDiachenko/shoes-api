@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { AddressDto } from "src/addresses/dto/address.dto";
 import { ProductDto } from "src/products/dto/product.dto";
 
@@ -20,4 +20,8 @@ export class OrderDto {
 
     @ApiProperty({ description: "Timestamp when the order was created" })
     createdAt: Date;
+
+    @ApiProperty({ description: "Notes of the order", nullable: true })
+    @ApiPropertyOptional()
+    orderNotes?: string;
 }
