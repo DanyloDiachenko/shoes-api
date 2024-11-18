@@ -23,9 +23,12 @@ export class OrderEntity {
     @Column("jsonb")
     cart: { productId: string; quantity: number }[];
 
-    @Column("timestamp", { default: () => "CURRENT_TIMESTAMP" })
-    createdAt: Date;
+    @Column("text")
+    shippingType: string;
 
     @Column("text", { nullable: true })
     orderNotes?: string;
+
+    @Column("timestamp", { default: () => "CURRENT_TIMESTAMP" })
+    createdAt: Date;
 }

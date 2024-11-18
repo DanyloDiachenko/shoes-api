@@ -10,4 +10,7 @@ export class CreateOrderDto {
     @IsString()
     @IsOptional()
     orderNotes?: string;
+
+    @IsString()
+    shippingType: string;
 }

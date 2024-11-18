@@ -18,10 +18,13 @@ export class OrderDto {
     })
     cart: ProductDto[];
 
-    @ApiProperty({ description: "Timestamp when the order was created" })
-    createdAt: Date;
+    @ApiProperty({ description: "Shipping type of the order" })
+    shippingType: string;
 
     @ApiProperty({ description: "Notes of the order", nullable: true })
     @ApiPropertyOptional()
     orderNotes?: string;
+
+    @ApiProperty({ description: "Timestamp when the order was created" })
+    createdAt: Date;
 }
