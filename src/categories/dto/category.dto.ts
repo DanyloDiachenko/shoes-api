@@ -10,3 +10,8 @@ export class CategoryDto {
     @ApiProperty({ description: "Slug of the category" })
     slug: string;
 }
+
+export class CategoryWithProductsDto extends CategoryDto {
+    @ApiProperty({ description: "Number of products in the category" })
+    productsQuantity: number;
+}

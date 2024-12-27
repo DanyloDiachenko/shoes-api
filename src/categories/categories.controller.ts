@@ -18,7 +18,7 @@ import {
     ApiParam,
     ApiBody,
 } from "@nestjs/swagger";
-import { CategoryDto } from "./dto/category.dto";
+import { CategoryDto, CategoryWithProductsDto } from "./dto/category.dto";
 
 @ApiTags("categories")
 @Controller("/categories")
@@ -60,7 +60,7 @@ export class CategoriesController {
     @ApiResponse({
         status: 200,
         description: "The category has been successfully retrieved.",
-        type: CategoryDto,
+        type: CategoryWithProductsDto,
     })
     @ApiResponse({ status: 404, description: "Category not found." })
     async getOne(@Param() params: FindOneParamsDto) {
@@ -72,7 +72,7 @@ export class CategoriesController {
     @ApiResponse({
         status: 200,
         description: "Return all categories.",
-        type: [CategoryDto],
+        type: [CategoryWithProductsDto],
     })
     async getAll() {
         return this.categoriesService.findAll();
