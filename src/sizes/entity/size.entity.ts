@@ -12,6 +12,9 @@ export class SizeEntity {
     @Column({ unique: true })
     slug: number;
 
-    @ManyToOne(() => ProductEntity, (product) => product.sizes)
+    @ManyToOne(() => ProductEntity, (product) => product.sizes, {
+        onDelete: "SET NULL",
+        nullable: true,
+    })
     product: ProductEntity;
 }
