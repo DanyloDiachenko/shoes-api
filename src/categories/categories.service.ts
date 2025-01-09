@@ -8,12 +8,15 @@ import {
     Injectable,
     NotFoundException,
 } from "@nestjs/common";
+import { ProductEntity } from "src/products/entities/product.entity";
 
 @Injectable()
 export class CategoriesService {
     constructor(
         @InjectRepository(CategoryEntity)
         private readonly categoriesRepository: Repository<CategoryEntity>,
+        @InjectRepository(ProductEntity)
+        private readonly productsRepository: Repository<ProductEntity>
     ) {}
 
     async create(createCategoryDto: CreateCategoryDto) {
@@ -65,24 +68,25 @@ export class CategoriesService {
     }
 
     async findAll() {
-        const categories = await this.categoriesRepository
-            .createQueryBuilder("category")
-            .leftJoin("category.products", "product")
-            .select([
-                "category.id",
-                "category.slug",
-                "category.title",
-                "COUNT(product.id) AS productsQuantity",
-            ])
-            .groupBy("category.id")
-            .getRawMany();
+        const categories = await this.categoriesRepository.find({
+            relations: ["products"],
+        });
 
-        return categories.map((category) => ({
-            id: category.category_id,
-            slug: category.category_slug,
-            title: category.category_title,
-            productsQuantity: Number(category.productsquantity),
-        }));
+        const products = await this.productsRepository.find({
+            relations: ["categories"],
+        });
+
+        return categories.map((category) => {
+            const productsQuantity = products.filter((product) =>
+                product.categories.some((cat) => cat.id === category.id),
+            ).length;
+
+            return {
+                ...category,
+                products: undefined,
+                productsQuantity,
+            };
+        });
     }
 
     async update(id: string, updateCategoryDto: UpdateCategoryDto) {
