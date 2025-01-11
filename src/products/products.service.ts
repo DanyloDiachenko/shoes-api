@@ -230,7 +230,7 @@ export class ProductsService {
 
         const productsWithRating = products.map((product) => {
             const totalReviews = product.reviews.length;
-            const averageRating =
+            const rating =
                 totalReviews > 0
                     ? product.reviews.reduce(
                           (acc, review) => acc + review.rating,
@@ -239,7 +239,7 @@ export class ProductsService {
                     : null;
             return {
                 ...product,
-                averageRating,
+                rating,
             };
         });
 
