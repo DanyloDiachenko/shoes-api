@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
 import { ColorsService } from "./colors.service";
 import { CreateColorDto } from "./dto/create-color.dto";
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { ColorDto } from "./dto/color.dto";
+import { FindOneParamsDto } from "src/helpers/find-one-params.dto";
 
 @ApiTags("colors")
 @Controller("colors")
@@ -31,5 +32,16 @@ export class ColorsController {
     })
     async findAll() {
         return await this.colorsService.findAll();
+    }
+
+    @Delete()
+    @ApiOperation({ summary: "Delete color" })
+    @ApiResponse({
+        status: 200,
+        description: "Color has been deleted",
+    })
+    @ApiResponse({ status: 404, description: "Color not found" })
+    async delete(@Param() params: FindOneParamsDto) {
+        return await this.colorsService.delete(params.id);
     }
 }

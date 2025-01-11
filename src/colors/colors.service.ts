@@ -21,4 +21,8 @@ export class ColorsService {
     async findAll() {
         return await this.colorsRespository.find();
     }
+
+    async delete(colorId: string) {
+        return await this.colorsRespository.delete({ id: colorId });
+    }
 }

@@ -50,6 +50,8 @@ export class SizesController {
     })
     @ApiResponse({ status: 404, description: "Size not found" })
     async delete(@Param() params: FindOneParamsDto) {
-        return await this.sizesService.delete(params.id);
+        await this.sizesService.delete(params.id);
+
+        return { success: true };
     }
 }
