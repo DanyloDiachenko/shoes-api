@@ -57,6 +57,7 @@ export class ProductsController {
         @Query("currency") currency: "uah" | "eur",
         @Query("priceFrom") priceFrom: number = 0,
         @Query("priceTo") priceTo: number = 100000,
+        @Query("search") search: string = "",
     ) {
         const pageNumber = parseInt(page, 10) || 1;
         const limitNumber = parseInt(limit, 10) || 6;
@@ -74,7 +75,8 @@ export class ProductsController {
             brandArray,
             currency,
             priceFrom,
-            priceTo
+            priceTo,
+            search,
         );
     }
 

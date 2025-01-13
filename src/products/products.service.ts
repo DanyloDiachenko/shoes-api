@@ -158,6 +158,7 @@ export class ProductsService {
         currency: "uah" | "eur",
         priceFrom: number = 0,
         priceTo: number = 100000,
+        search: string = "",
     ) {
         const query = this.productsRepository.createQueryBuilder("product");
 
@@ -213,6 +214,12 @@ export class ProductsService {
                     priceTo: priceTo,
                 },
             );
+        }
+
+        if (search.length > 3) {
+            query.andWhere("product.title ILIKE :search", {
+                search: `%${search}%`,
+            });
         }
 
         switch (sortBy) {
