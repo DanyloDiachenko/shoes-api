@@ -216,7 +216,7 @@ export class ProductsService {
             );
         }
 
-        if (search.length > 3) {
+        if (search.length >= 3) {
             query.andWhere("product.title ILIKE :search", {
                 search: `%${search}%`,
             });
