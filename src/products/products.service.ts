@@ -200,7 +200,10 @@ export class ProductsService {
 
         if (currency === "uah") {
             query.andWhere(
-                `(COALESCE(product.priceWithDiscountUah, product.priceUah) BETWEEN :priceFrom AND :priceTo)`,
+                `(CASE 
+            WHEN product.priceWithDiscountUah > 0 THEN product.priceWithDiscountUah 
+            ELSE product.priceUah 
+        END) BETWEEN :priceFrom AND :priceTo`,
                 {
                     priceFrom: priceFrom,
                     priceTo: priceTo,
@@ -208,7 +211,10 @@ export class ProductsService {
             );
         } else if (currency === "eur") {
             query.andWhere(
-                `(COALESCE(product.priceWithDiscountEur, product.priceEur) BETWEEN :priceFrom AND :priceTo)`,
+                `(CASE 
+            WHEN product.priceWithDiscountEur > 0 THEN product.priceWithDiscountEur 
+            ELSE product.priceEur 
+        END) BETWEEN :priceFrom AND :priceTo`,
                 {
                     priceFrom: priceFrom,
                     priceTo: priceTo,
