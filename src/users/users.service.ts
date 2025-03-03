@@ -35,6 +35,8 @@ export class UsersService {
             passwordHash: createUserDto.password
                 ? await argon2.hash(createUserDto.password)
                 : null,
+            firstName: createUserDto.firstName || null,
+            lastName: createUserDto.lastName || null,
         });
 
         const token = this.jwtService.sign({
@@ -104,9 +106,9 @@ export class UsersService {
             ],
         });
 
-        if (!user) {
+        /* if (!user) {
             throw new NotFoundException("User not found");
-        }
+        } */
 
         return user;
     }

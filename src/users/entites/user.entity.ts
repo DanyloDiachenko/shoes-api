@@ -52,4 +52,7 @@ export class UserEntity {
 
     @OneToMany(() => ReviewEntity, (review) => review.user)
     reviews: ReviewEntity[];
+
+    @Column({ nullable: true })
+    authProvider?: string;
 }

@@ -20,4 +20,9 @@ export class CreateUserDto {
     @IsString()
     @IsOptional()
     lastName?: string;
+
+    @ApiProperty({ description: "User`s auth provider" })
+    @IsString()
+    @IsOptional()
+    authProvider?: string;
 }

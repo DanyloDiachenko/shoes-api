@@ -13,7 +13,10 @@ export class UpdateUserDto {
     @MinLength(6, { message: "New password must be more than 6 symbols" })
     newPassword?: string;
 
-    @ApiPropertyOptional({ description: "Previous user's password", minLength: 6 })
+    @ApiPropertyOptional({
+        description: "Previous user's password",
+        minLength: 6,
+    })
     @IsString()
     @IsOptional()
     @MinLength(6, { message: "Previous password must be more than 6 symbols" })
@@ -22,20 +25,25 @@ export class UpdateUserDto {
     @ApiPropertyOptional({ description: "First name of the user" })
     @IsString()
     @IsOptional()
-    firstName: string;
+    firstName?: string;
 
     @ApiPropertyOptional({ description: "Last name of the user" })
     @IsString()
     @IsOptional()
-    lastName: string;
+    lastName?: string;
 
     @ApiPropertyOptional({ description: "Display name of the user" })
     @IsString()
     @IsOptional()
-    displayName: string;
+    displayName?: string;
 
     @ApiPropertyOptional({ description: "Phone number of the user" })
     @IsString()
     @IsOptional()
-    phone: string;
+    phone?: string;
+
+    @ApiPropertyOptional({ description: "Auth provider of the user" })
+    @IsString()
+    @IsOptional()
+    authProvider?: string;
 }
