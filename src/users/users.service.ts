@@ -91,7 +91,7 @@ export class UsersService {
     }
 
     async findOne(email: string) {
-        return await this.usersRepository.findOne({
+        const user = await this.usersRepository.findOne({
             where: {
                 email,
             },
@@ -103,5 +103,11 @@ export class UsersService {
                 "reviews",
             ],
         });
+
+        if (!user) {
+            throw new NotFoundException("User not found");
+        }
+
+        return user;
     }
 }

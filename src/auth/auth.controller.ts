@@ -19,10 +19,10 @@ import {
     ApiBody,
 } from "@nestjs/swagger";
 import { LoginDto } from "./dto/login.dto";
-import { LoginResponseDto } from "./dto/login-response.dto";
+import { AuthResponseDto } from "./dto/auth-response.dto";
 import { ProfileResponseDto } from "./dto/profile-response.dto";
+import { RegisterDto } from "./dto/register.dto";
 import { GoogleLoginDto } from "./dto/google-login.dto";
-import { FindOneParamsDto } from "src/helpers/find-one-params.dto";
 
 @ApiTags("auth")
 @Controller("auth")
@@ -36,7 +36,7 @@ export class AuthController {
     @ApiResponse({
         status: 201,
         description: "Login successful",
-        type: LoginResponseDto,
+        type: AuthResponseDto,
     })
     @ApiResponse({
         status: 401,
@@ -45,6 +45,22 @@ export class AuthController {
     @ApiResponse({ status: 400, description: "User not found" })
     async login(@Body() loginDto: LoginDto) {
         return await this.authService.login(loginDto);
+    }
+
+    @Post("register")
+    @ApiOperation({ summary: "User register" })
+    @ApiBody({ type: LoginDto })
+    @ApiResponse({
+        status: 201,
+        description: "Register successful",
+        type: AuthResponseDto,
+    })
+    @ApiResponse({
+        status: 400,
+        description: "User already exists",
+    })
+    async register(@Body() registerDto: RegisterDto) {
+        return await this.authService.register(registerDto);
     }
 
     @Get("profile")
@@ -63,26 +79,16 @@ export class AuthController {
 
     @Post("google-login")
     @ApiOperation({ summary: "Google login" })
-    @ApiBody({ type: GoogleLoginDto })
+    @ApiBody({ type: AuthResponseDto })
     @ApiResponse({
         status: 201,
-        description: "Login successful",
+        description: "Authentification with googlesuccessful",
     })
     @ApiResponse({
         status: 401,
         description: "Google token is invalid",
     })
     async googleLogin(@Body() googleLoginDto: GoogleLoginDto) {
-        const user = await this.authService.validateGoogleUser(
-            googleLoginDto.token,
-        );
-
-        if (!user) {
-            throw new UnauthorizedException(
-                "Invalid Google token on controller",
-            );
-        }
-
-        return this.authService.loginWithGoogle(user);
+        return await this.authService.googleLogin(googleLoginDto.token);
     }
 }

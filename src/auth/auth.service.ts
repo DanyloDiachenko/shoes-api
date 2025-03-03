@@ -9,8 +9,9 @@ import * as argon2 from "argon2";
 import { IUser } from "src/types/user.interface";
 import { LoginDto } from "./dto/login.dto";
 import { GoogleLoginDto } from "./dto/google-login.dto";
-import { OAuth2Client } from "google-auth-library";
 import { ConfigService } from "@nestjs/config";
+import { RegisterDto } from "./dto/register.dto";
+import { OAuth2Client } from "google-auth-library";
 
 @Injectable()
 export class AuthService {
@@ -75,60 +76,82 @@ export class AuthService {
                 : "TOKEN_EXPIRES_IN_NOT_REMEMBER_ME",
         );
 
+        const token = await this.jwtService.signAsync(
+            {
+                id: findedUser.id,
+                email,
+            },
+            {
+                expiresIn,
+            },
+        );
+
         return {
-            id: findedUser.id,
-            email: findedUser.email,
-            token: this.jwtService.sign(
-                { id: findedUser.id, email },
-                { expiresIn },
-            ),
+            token: token,
         };
     }
 
-    async validateGoogleUser(accessToken: string) {
-        try {
-            const response = await fetch(
-                `https://www.googleapis.com/oauth2/v3/userinfo`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                },
-            );
+    async register(registerDto: RegisterDto) {
+        const { email, password } = registerDto;
 
-            const payload = await response.json();
-
-            if (!payload || !payload.email) {
-                throw new UnauthorizedException("Invalid Google token 89");
-            }
-
-            let user = await this.usersService.findOne(payload.email);
-            if (!user) {
-                user = await this.usersService.create({
-                    email: payload.email,
-                    password: null,
-                });
-            }
-
-            return user;
-        } catch (error) {
-            throw new UnauthorizedException("Invalid Google token catch");
+        const findedUser = await this.usersService.findOne(email);
+        if (findedUser) {
+            throw new BadRequestException("User already exists");
         }
+
+        const hashedPassword = await argon2.hash(password);
+        await this.usersService.create({
+            email,
+            password: hashedPassword,
+        });
+
+        return await this.login({ email, password });
     }
 
-    async loginWithGoogle(user) {
-        return {
-            id: user.id,
-            email: user.email,
-            token: this.jwtService.sign({ id: user.id, email: user.email }),
-        };
-    }
-
-    async getProfile(userEmail: string) {
-        const user = await this.usersService.findOne(userEmail);
+    async getProfile(email: string) {
+        const user = await this.usersService.findOne(email);
+        if (!user) {
+            throw new BadRequestException("User not found");
+        }
 
         const { passwordHash, ...userWithoutPassword } = user;
 
         return { ...userWithoutPassword };
+    }
+
+    async googleLogin(token: string) {
+        const ticket = await this.googleClient.verifyIdToken({
+            idToken: token,
+            audience: this.configService.get("GOOGLE_CLIENT_ID"),
+        });
+
+        const payload = ticket.getPayload();
+        if (!payload) {
+            throw new UnauthorizedException("Google token is invalid");
+        }
+
+        const user = await this.usersService.findOne(payload.email);
+        if (user) {
+            return await this.login({
+                email: user.email,
+                password: process.env.GOOGLE_DEFAULT_PASSWORD,
+            });
+        } else {
+            const hashedPassword = await argon2.hash(
+                this.configService.get(process.env.GOOGLE_DEFAULT_PASSWORD),
+            );
+
+            const newUser = await this.usersService.create({
+                email: payload.email,
+                password: hashedPassword,
+                firstName: payload.given_name,
+                lastName: payload.family_name,
+            });
+
+            return await this.login({
+                email: newUser.email,
+                password: this.configService.get("GOOGLE_DEFAULT_PASSWORD"),
+            });
+        }
     }
 }

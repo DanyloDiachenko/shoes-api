@@ -1,12 +1,4 @@
-import {
-    Body,
-    Controller,
-    Param,
-    Post,
-    Put,
-    Req,
-    UseGuards,
-} from "@nestjs/common";
+import { Body, Controller, Post, Put, Req, UseGuards } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import {
@@ -18,7 +10,6 @@ import {
 } from "@nestjs/swagger";
 import { UserDto } from "./dto/user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { IUser } from "src/types/user.interface";
 import { FindOneParamsDto } from "src/helpers/find-one-params.dto";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 
@@ -28,14 +19,6 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
     @Post("create")
-    @ApiOperation({ summary: "Create a new user" })
-    @ApiBody({ type: CreateUserDto })
-    @ApiResponse({
-        status: 201,
-        description: "User created successfully",
-        type: UserDto,
-    })
-    @ApiResponse({ status: 400, description: "Bad Request" })
     async create(@Body() createUserDto: CreateUserDto) {
         return await this.usersService.create(createUserDto);
     }
