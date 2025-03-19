@@ -18,18 +18,24 @@ export class OrdersService {
         private ordersRepository: Repository<OrderEntity>,
         @InjectRepository(ProductEntity)
         private productsRepository: Repository<ProductEntity>,
+        @InjectRepository(UserEntity)
+        private readonly usersRepository: Repository<UserEntity>,
     ) {}
 
     async create(
         createOrderDto: CreateOrderDto,
-        user: UserEntity,
+        userId: string,
     ): Promise<OrderEntity> {
+        const user = await this.usersRepository.findOne({
+            where: { id: userId },
+        });
+        if (!user) {
+            throw new NotFoundException("User not found");
+        }
+
         const order = this.ordersRepository.create({
             ...createOrderDto,
             user,
-            deliveryAddress: {
-                id: createOrderDto.deliveryAddressId,
-            } as AddressEntity,
         });
 
         return this.ordersRepository.save(order);

@@ -6,11 +6,18 @@ export class OrderDto {
     @ApiProperty({ description: "ID of the order" })
     id: string;
 
-    @ApiProperty({
-        description: "Delivery address of the order",
-        type: AddressDto,
-    })
-    deliveryAddress: AddressDto;
+    @ApiProperty({ description: "User ID of the order" })
+    userId: string;
+
+    @ApiProperty({ description: "Amount of the order" })
+    amount: number;
+
+    @ApiProperty({ description: "Currency of the order" })
+    currency: string;
+
+    @ApiProperty({ description: "Notes of the order", nullable: true })
+    @ApiPropertyOptional()
+    orderNotes?: string;
 
     @ApiProperty({
         description: "List of products in the cart",
@@ -20,10 +27,6 @@ export class OrderDto {
 
     @ApiProperty({ description: "Shipping type of the order" })
     shippingType: string;
-
-    @ApiProperty({ description: "Notes of the order", nullable: true })
-    @ApiPropertyOptional()
-    orderNotes?: string;
 
     @ApiProperty({ description: "Timestamp when the order was created" })
     createdAt: Date;

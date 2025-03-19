@@ -33,8 +33,9 @@ export class OrdersController {
         @Body() createOrderDto: CreateOrderDto,
         @Req() req: any,
     ): Promise<OrderEntity> {
-        const user = req.user;
-        return this.ordersService.create(createOrderDto, user);
+        const userId = req.user.id;
+
+        return this.ordersService.create(createOrderDto, userId);
     }
 
     @UseGuards(JwtAuthGuard)

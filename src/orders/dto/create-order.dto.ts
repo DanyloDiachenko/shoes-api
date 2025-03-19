@@ -1,15 +1,22 @@
-import { IsArray, IsOptional, IsString, IsUUID } from "class-validator";
+import {
+    IsArray,
+    IsNotEmpty,
+    IsNumber,
+    IsOptional,
+    IsString,
+} from "class-validator";
 
 export class CreateOrderDto {
-    @IsArray()
-    cart: { productId: string; quantity: number }[];
-
-    @IsUUID()
-    deliveryAddressId: string;
+    @IsNumber()
+    amount: number;
 
     @IsString()
     @IsOptional()
     orderNotes?: string;
+
+    @IsArray()
+    @IsNotEmpty()
+    cart: { productId: string; quantity: number; size: number }[];
 
     @IsString()
     shippingType: string;
