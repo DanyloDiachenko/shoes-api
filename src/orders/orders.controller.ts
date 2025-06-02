@@ -11,6 +11,7 @@ import {
     ApiBody,
 } from "@nestjs/swagger";
 import { OrderDto } from "./dto/order.dto";
+import { CreateOrderResponseDto } from "./dto/create-order-response.dto";
 
 @ApiTags("orders")
 @Controller("orders")
@@ -25,14 +26,14 @@ export class OrdersController {
     @ApiResponse({
         status: 201,
         description: "The order has been successfully created.",
-        type: OrderDto,
+        type: CreateOrderResponseDto,
     })
     @ApiResponse({ status: 401, description: "Unauthorized" })
     @ApiResponse({ status: 400, description: "Bad Request" })
     async create(
         @Body() createOrderDto: CreateOrderDto,
         @Req() req: any,
-    ): Promise<OrderEntity> {
+    ): Promise<CreateOrderResponseDto> {
         const userId = req.user.id;
 
         return this.ordersService.create(createOrderDto, userId);

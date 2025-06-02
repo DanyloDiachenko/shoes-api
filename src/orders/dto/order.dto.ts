@@ -1,5 +1,4 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { AddressDto } from "src/addresses/dto/address.dto";
 import { ProductDto } from "src/products/dto/product.dto";
 
 export class OrderDto {

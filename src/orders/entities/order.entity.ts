@@ -16,12 +16,8 @@ export class OrderEntity {
     @ManyToOne(() => UserEntity, (user) => user.orders)
     user: UserEntity;
 
-    @ManyToOne(() => AddressEntity)
-    @JoinColumn({ name: "deliveryAddressId" })
-    deliveryAddress: AddressEntity;
-
     @Column("jsonb")
-    cart: { productId: string; quantity: number }[];
+    cart: { productId: string; quantity: number; size: number }[];
 
     @Column("text")
     shippingType: string;
