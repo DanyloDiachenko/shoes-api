@@ -3,10 +3,8 @@ import {
     Entity,
     ManyToOne,
     PrimaryGeneratedColumn,
-    JoinColumn,
 } from "typeorm";
 import { UserEntity } from "src/users/entites/user.entity";
-import { AddressEntity } from "src/addresses/entities/address.entity";
 
 @Entity("orders")
 export class OrderEntity {
