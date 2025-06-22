@@ -8,9 +8,7 @@ import { CategoryEntity } from "src/categories/entities/category.entity";
 import { BrandEntity } from "src/brands/entities/brand.entity";
 import { ReviewEntity } from "src/reviews/entity/review.entity";
 import { ColorEntity } from "src/colors/entity/color.entity";
-import { ProductWithRatingDto } from "./dto/productWithRaiting.dto";
 import { SizeEntity } from "src/sizes/entity/size.entity";
-import { In } from "typeorm";
 
 @Injectable()
 export class ProductsService {

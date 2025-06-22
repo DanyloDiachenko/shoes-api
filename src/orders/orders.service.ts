@@ -109,6 +109,7 @@ export class OrdersService {
                         return {
                             ...product,
                             quantity: item.quantity,
+                            size: item.size,
                         };
                     }
                     return item;
