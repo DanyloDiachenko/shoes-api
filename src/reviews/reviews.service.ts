@@ -48,7 +48,10 @@ export class ReviewsService {
 
         await this.productsRepository.save(product);
 
-        return savedReview;
+        return {
+            ...savedReview,
+            author: `${user.firstName} ${user.lastName}`,
+        };
     }
 
     async changeBenefit(id: string, type: "increase" | "decrease") {

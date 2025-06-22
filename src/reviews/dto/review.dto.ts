@@ -11,6 +11,11 @@ export class ReviewDto {
     })
     rating: number;
 
+    @ApiProperty({
+        description: "Author of the review",
+    })
+    author: string;
+
     @ApiProperty({ description: "Timestamp when the order was created" })
     createdAt: Date;
 
