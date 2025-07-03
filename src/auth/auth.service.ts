@@ -6,9 +6,7 @@ import {
 import { JwtService } from "@nestjs/jwt";
 import { UsersService } from "src/users/users.service";
 import * as argon2 from "argon2";
-import { IUser } from "src/types/user.interface";
 import { LoginDto } from "./dto/login.dto";
-import { GoogleLoginDto } from "./dto/google-login.dto";
 import { ConfigService } from "@nestjs/config";
 import { RegisterDto } from "./dto/register.dto";
 import { OAuth2Client } from "google-auth-library";
@@ -151,30 +149,5 @@ export class AuthService {
         );
 
         return { token: signToken };
-    }
-
-    async linkGoogleAccount(email: string, googleToken: string) {
-        const ticket = await this.googleClient.verifyIdToken({
-            idToken: googleToken,
-            audience: this.configService.get("GOOGLE_CLIENT_ID"),
-        });
-
-        const payload = ticket.getPayload();
-        if (!payload) {
-            throw new UnauthorizedException("Google token is invalid");
-        }
-
-        const user = await this.usersService.findOne(email);
-        if (!user) {
-            throw new BadRequestException("User not found");
-        }
-
-        if (user.authProvider === "google") {
-            throw new BadRequestException("Google account is already linked.");
-        }
-
-        await this.usersService.update({ authProvider: "google" }, user.id);
-
-        return { message: "Google account linked successfully." };
     }
 }

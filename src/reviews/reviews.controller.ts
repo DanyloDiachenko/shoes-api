@@ -46,7 +46,6 @@ export class ReviewsController {
     async changeBenefit(
         @Param() params: FindOneParamsDto,
         @Param("type") type: "increase" | "decrease",
-        @Req() req: any,
     ) {
         return await this.reviewsService.changeBenefit(params.id, type);
     }

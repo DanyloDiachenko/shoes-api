@@ -1,12 +1,6 @@
 import { ProductEntity } from "src/products/entities/product.entity";
 import { UserEntity } from "src/users/entites/user.entity";
-import {
-    Column,
-    Entity,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-    Timestamp,
-} from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("reviews")
 export class ReviewEntity {
